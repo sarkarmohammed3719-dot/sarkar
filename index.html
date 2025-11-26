@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRN - Kamaran Pshdari</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Kufi Arabic', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #0f0c29;
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 40px 15px; color: white; overflow-x: hidden; position: relative;
+        }
+
+        .background-orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; animation: floatOrb 10s infinite alternate; }
+        .orb-1 { width: 300px; height: 300px; background: #ff00cc; top: -50px; left: -50px; }
+        .orb-2 { width: 400px; height: 400px; background: #333399; bottom: -100px; right: -100px; animation-delay: -5s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px; 
+            padding: 30px 25px 45px 25px;
+            width: 100%; max-width: 420px; text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            margin-bottom: 20px; position: relative;
+            overflow: hidden;
+        }
+
+        /* --- نوسینی جوڵاو (Marquee) --- */
+        .welcome-marquee {
+            width: 100%;
+            height: 45px;
+            background: rgba(0, 198, 255, 0.15);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .marquee-content {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            width: max-content;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px rgba(0, 198, 255, 0.8);
+            animation: moveLeftToRight 15s linear infinite;
+        }
+
+        @keyframes moveLeftToRight {
+            0% { left: 0; transform: translate(-100%, -50%); }
+            100% { left: 100%; transform: translate(0%, -50%); }
+        }
+
+        /* --- گروپکردنی دوگمەکان --- */
+        .action-bar {
+            position: relative; 
+            margin: 25px auto 10px auto;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: fit-content;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .action-btn {
+            font-size: 1.3rem; color: #fff; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .action-btn:hover { color: #00C6FF; transform: scale(1.2); }
+
+        .profile-img-container {
+            width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; padding: 5px;
+            background: linear-gradient(135deg, #00f260, #0575e6);
+            box-shadow: 0 0 30px rgba(5, 117, 230, 0.5); position: relative;
+        }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #1a1a1a; }
+        
+        .status-pill {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) translateY(50%);
+            background: #222; border: 1px solid rgba(255,255,255,0.2);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+            display: flex; align-items: center; gap: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            z-index: 10;
+        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        .logo-text {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: linear-gradient(to right, #ffffff, #00C6FF, #b3b3b3, #00C6FF, #ffffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineLogo 4s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
+            margin-bottom: 5px; 
+            margin-top: 10px;
+        }
+        
+        @keyframes shineLogo { to { background-position: 200% center; } }
+
+        .name-wrapper { height: 30px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; }
+        .name-text {
+            font-size: 1.4rem; font-weight: 700; color: #00C6FF;
+            border-left: 2px solid #00C6FF; padding-left: 5px; animation: blink 0.7s infinite;
+        }
+
+        .about-badge {
+            display: inline-block; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 20px;
+            border-radius: 50px; margin-bottom: 25px; position: relative; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .about-text { font-size: 0.85rem; color: #e0e0e0; font-weight: 400; }
+        .about-badge::after { content: ''; display: block; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, #FFD700, transparent); margin: 2px auto 0; border-radius: 2px; }
+        .about-badge::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shineBadge 4s infinite; }
+        @keyframes shineBadge { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
+        @keyframes blink { 50% { border-color: transparent; } }
+
+        .stats-container {
+            display: flex; justify-content: space-around; width: 100%; margin-bottom: 25px;
+            background: rgba(0,0,0,0.2); border-radius: 20px; padding: 15px 5px;
+        }
+        .stat-box { text-align: center; }
+        .stat-num { font-size: 1.3rem; font-weight: 900; color: #FFD700; }
+        .stat-label { font-size: 0.7rem; color: #aaa; margin-top: 3px; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .service-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .service-item:hover { background: rgba(0, 198, 255, 0.1); transform: translateY(-3px); }
+        .service-icon { font-size: 1.2rem; color: #FFD700; margin-bottom: 5px; }
+        .service-title { font-size: 0.7rem; color: #ddd; }
+
+        .slider-container { width: 100%; overflow: hidden; margin-bottom: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .slider-track { display: flex; width: 300%; animation: sliderAnimation 12s infinite ease-in-out; }
+        .slide-img { width: 100%; height: 180px; object-fit: cover; }
+        @keyframes sliderAnimation { 0%, 30% { transform: translateX(0); } 35%, 65% { transform: translateX(33.33%); } 70%, 100% { transform: translateX(66.66%); } }
+
+        .reviews-section { margin-bottom: 35px; text-align: right; }
+        .reviews-title { font-size: 1rem; color: #ccc; margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
+        .reviews-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
+        .reviews-scroll::-webkit-scrollbar { display: none; }
+        .review-card { min-width: 220px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .review-header { display: flex; justify-content: space-between; align-items: center; }
+        .stars { color: #FFD700; font-size: 0.8rem; }
+        .review-text { font-size: 0.8rem; color: #ddd; line-height: 1.5; }
+        .review-author { font-size: 0.75rem; color: #00C6FF; font-weight: bold; text-align: left; margin-top: 5px; }
+
+        /* --- ئەنیمەیشن و ڕەنگی دوگمەکان --- */
+        .social-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
+        
+        @keyframes popOutColor {
+            0%, 100% { 
+                transform: scale(1); 
+                z-index: 1; 
+                background: rgba(30, 30, 30, 0.6); 
+                border-color: rgba(255,255,255,0.05);
+                color: #fff;
+            }
+            50% { 
+                transform: scale(1.12); 
+                z-index: 10; 
+                box-shadow: 0 10px 25px var(--brand-shadow); 
+                background: var(--brand-bg); 
+                border-color: var(--brand-bg);
+                color: var(--brand-text);
+            }
+        }
+
+        .link-btn {
+            display: flex; align-items: center; justify-content: space-between;
+            text-decoration: none; padding: 16px 22px; border-radius: 18px;
+            color: white; font-weight: bold; font-size: 1rem;
+            transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(30, 30, 30, 0.6); position: relative; overflow: hidden;
+            animation: popOutColor 4s infinite ease-in-out;
+            --brand-text: #fff; 
+        }
+        
+        .social-links .link-btn:nth-child(1) { animation-delay: 0s; }
+        .social-links .link-btn:nth-child(2) { animation-delay: 0.3s; }
+        .social-links .link-btn:nth-child(3) { animation-delay: 0.6s; }
+        .social-links .link-btn:nth-child(4) { animation-delay: 0.9s; }
+        .social-links .link-btn:nth-child(5) { animation-delay: 1.2s; }
+        .social-links .link-btn:nth-child(6) { animation-delay: 1.5s; }
+
+        .save-contact { 
+            --brand-bg: linear-gradient(90deg, #FFD700, #FDB931); 
+            --brand-shadow: rgba(255, 215, 0, 0.4);
+            --brand-text: #000; 
+        }
+        .phone-call { 
+            --brand-bg: linear-gradient(90deg, #11998e, #38ef7d); 
+            --brand-shadow: rgba(56, 239, 125, 0.4);
+        }
+        .whatsapp { 
+            --brand-bg: #25D366; 
+            --brand-shadow: rgba(37, 211, 102, 0.4);
+        }
+        .facebook { 
+            --brand-bg: #1877f2; 
+            --brand-shadow: rgba(24, 119, 242, 0.4);
+        }
+        .instagram { 
+            --brand-bg: linear-gradient(45deg, #f09433, #dc2743, #bc1888); 
+            --brand-shadow: rgba(220, 39, 67, 0.4);
+        }
+        .tiktok { 
+            --brand-bg: #000000; 
+            --brand-shadow: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255,255,255,0.2); 
+        }
+
+        .link-btn:hover { 
+            transform: translateY(-3px) scale(1.05); 
+            animation-play-state: paused;
+            z-index: 20;
+            background: var(--brand-bg);
+            border-color: var(--brand-bg);
+            color: var(--brand-text);
+            box-shadow: 0 10px 25px var(--brand-shadow);
+        }
+
+        /* --- چاککردنی ستایلی پرسیارەکان (Fix for FAQ) --- */
+        .faq-section { text-align: center; margin-top: 10px; }
+        .faq-title { font-size: 1.1rem; margin-bottom: 20px; color: #fff; text-align: center; position: relative; display: inline-block; }
+        .faq-title::after { content: ''; display: block; width: 40px; height: 3px; background: #00C6FF; margin: 5px auto 0; border-radius: 2px; }
+        
+        .faq-item {
+            margin-bottom: 12px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            transition: 0.3s;
+            text-align: right;
+        }
+        .faq-item.active { background: rgba(30, 30, 35, 0.9); border-color: rgba(0, 198, 255, 0.5); }
+        
+        .faq-question {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+        
+        .faq-question span {
+            flex: 1;
+            margin-left: 10px;
+            word-wrap: break-word;
+        }
+
+        .faq-icon {
+            transition: 0.3s;
+            color: #666;
+            flex-shrink: 0;
+        }
+        
+        .faq-item.active .faq-icon { transform: rotate(180deg); color: #00C6FF; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s ease; background: rgba(0,0,0,0.2); }
+        .faq-answer p { padding: 0 20px 20px; color: #bbb; font-size: 0.85rem; line-height: 1.7; text-align: right; }
+        /* ------------------------------------------------ */
+
+        .footer { margin-top: 40px; font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .view-count { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 198, 255, 0.9); color: black; padding: 12px 25px;
+            border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 100; opacity: 0; pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* --- ستایلی دوگمەی گەڕانەوە بۆ سەرەوە --- */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 198, 255, 0.9);
+            color: #000;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 999;
+            transform: translateY(20px);
+        }
+        .scroll-top-btn.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+        .scroll-top-btn:hover {
+            transform: scale(1.1);
+            background: #fff;
+        }
+
+        .qr-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000;
+        }
+        .qr-modal.active { opacity: 1; pointer-events: all; }
+        .qr-box {
+            background: white; padding: 20px; border-radius: 20px; text-align: center; color: black;
+            box-shadow: 0 0 50px rgba(0, 198, 255, 0.5); transform: scale(0.8); transition: 0.3s;
+        }
+        .qr-modal.active .qr-box { transform: scale(1); }
+        .qr-image { width: 200px; height: 200px; margin-bottom: 10px; }
+        .close-qr {
+            margin-top: 10px; background: #333; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <div class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <div class="card">
+        
+        <div class="welcome-marquee">
+            <span class="marquee-content" id="marqueeText">بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو</span>
+        </div>
+
+        <div class="profile-img-container">
+            <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img">
+            <div class="status-pill" id="statusPill">
+                <div class="status-dot"></div>
+                <span id="statusText">...</span>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <div class="action-btn" onclick="copyLink()" title="کۆپیکردنی لینک"><i class="fas fa-share-alt"></i></div>
+            <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
+            <a href="https://maps.google.com" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+
+        <div class="logo-text">KRN</div>
+        
+        <div class="name-wrapper">
+            <span class="name-text" id="typing-name"></span>
+        </div>
+
+        <div class="about-badge">
+            <div class="about-text">پەڕەی فەرمی بەرهەمەکانی کامەران پشدەری</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-num" data-target="500">0+</div>
+                <div class="stat-label">مشتەری</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" data-target="3">0</div>
+                <div class="stat-label">ساڵ ئەزموون</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" data-target="4">0</div>
+                <div class="stat-label">بەرهەم</div>
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-item">
+                <div class="service-icon"><i class="fas fa-truck-fast"></i></div>
+                <div class="service-title">گەیاندنی خێرا</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="service-title">زەمانەت</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                <div class="service-title">پشتگیری ٢٤/٧</div>
+            </div>
+        </div>
+
+       <div class="slider-container">
+            <div class="slider-track">
+                <img src="1.jpg" class="slide-img" alt="First Image">
+                
+                <img src="2.jpg" class="slide-img" alt="Second Image">
+                
+                <img src="3.jpg" class="slide-img" alt="Third Image">
+            </div>
+        </div>
+        <div class="reviews-section">
+            <div class="reviews-title">ڕای مشتەرییەکانمان</div>
+            <div class="reviews-scroll">
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"دەستتان خۆش بێت بەڕاستی کارەکەتان زۆر جوان و ناوازە بوو، زۆر لێی ڕازیم."</div>
+                    <div class="review-author">- ئەحمەد کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"خزمەتگوزارییەکانتان زۆر خێران و نرخەکانتان زۆر گونجاون، سەرکەوتوو بن."</div>
+                    <div class="review-author">- ڕێباز عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"باشترین شوێن بۆ ئەوەی کارەکانت بە دڵنیاییەوە ئەنجام بدەیت."</div>
+                    <div class="review-author">- سارا محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کوالیتی بەرهەمەکان زۆر بەرزە، پێشنیار دەکەم بۆ هەموو کەسێک."</div>
+                    <div class="review-author">- عەلی حەسەن</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پشتگیری کڕیاران زۆر باشە، هەمو کێشەیەکت ڕوون دەکەنەوە."</div>
+                    <div class="review-author">- کەریم ئەحمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"خێرایی گەیاندن زۆر باشە، لە ماوەیەکی کەمدا گەیشتە دەستمان."</div>
+                    <div class="review-author">- هۆشەر محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"نرخی گونجاو و کوالیتی زۆر باش، بە ڕاستی کەسێکی پلە یەک."</div>
+                    <div class="review-author">- ڕەزا عەباس</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پێشنیاری تایبەتیان پێشکەش دەکەن، زۆر ڕازیم لە خزمەتگوزاریەکە."</div>
+                    <div class="review-author">- سیروان عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پڕۆژەکەم بە باشترین شێوە تەواو کرد، زۆر سوپاس بۆ هاوکاریەکان."</div>
+                    <div class="review-author">- میران کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پێشنیارێکی زۆر باشم پێشکەش کرد، ئێستا کاری زۆر باشم هەیە."</div>
+                    <div class="review-author">- هەڤال عەزیز</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کەسێکی زۆر پێگەیشتوو و پسپۆڕە، هەمو پرسیارێکت ڕوون دەکاتەوە."</div>
+                    <div class="review-author">- شەھاب نادر</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کاری دەستکردی زۆر جوان و پڕ وردەکاریە، بە ڕاستی حەزێکی تایبەتی هەیە."</div>
+                    <div class="review-author">- ڕۆژان محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پاشەکەوتکردنی پارە و کات، بەرهەمەکەی بە نرخی زۆر باشە."</div>
+                    <div class="review-author">- ئاراس فەرهاد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پەیوەندیەکانی دوای فرۆشتن زۆر باشە، هەر کات پرسیارێکم هەبوو وەڵامم دەداەوە."</div>
+                    <div class="review-author">- دڵشاد حەمە</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"بەرهەمەکانی تایبەت و جیاوازن، لە بازاڕدا شتێکی تایبەت و ناوازەن."</div>
+                    <div class="review-author">- هەڵەبجە عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پلانی بازرگانیام بە سەرکەوتویی جێبەجێ کرد، سوپاس بۆ یارمەتیەکان."</div>
+                    <div class="review-author">- بازرگان کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"وردبینی و وردەکاری لە کارەکاندا زۆر بەرزە، هەمو شتێک لە شوێنی خۆیدایە."</div>
+                    <div class="review-author">- ئەندازیار سیروان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کۆمپانیاکەم پێشکەوتنی زۆری بەخشی، ئێستا ژمارەیەکی زۆر کڕیاری هەیە."</div>
+                    <div class="review-author">- بەڕێوبەر عەباس</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"نوێکردنەوە و کێشەچارەسەری خێرا، هەر کێشەیەک ڕووبدات خێرا چارەسەری دەکەن."</div>
+                    <div class="review-author">- کەسب کار محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پڕۆژە گەورەکان بە سەرکەوتویی تەواو دەکات، کەسێکی متمانەپێکراوە."</div>
+                    <div class="review-author">- پڕۆژە مەعروف</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"فیکری بازرگانی و مارکێتینگ زۆر باشە، کەسێکی خەڵک ناسە."</div>
+                    <div class="review-author">- بازرگان سەلام</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کوالیتی بەرهەم و خزمەتگوزاری هەردووکیان زۆر بەرزن، پێشنیار دەکەم."</div>
+                    <div class="review-author">- دەستە سەربەرز</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پلانی دروست و ڕێک و پێک، هەمو هەنگاوەکان ڕوون و ڕەوانە."</div>
+                    <div class="review-author">- پلان دانەر عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"تەکنەلۆژیای نوێ و پێشکەوتوو بەکاردەهێنێت، لە پێشەنگی تەکنەلۆژیادایە."</div>
+                    <div class="review-author">- تەکنەلۆژیاسان ڕەزا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کەسێکی وەفادار و پاکەت، هەرچی پێت بڵێ دەیکات، متمانەی تێدەکەم."</div>
+                    <div class="review-author">- هاورێی دەست پێک</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"دەستکەوتەکانم زۆر زیاد کردووە، سوپاس بۆ ڕێنماییە پسپۆڕەکان."</div>
+                    <div class="review-author">- بازرگان نوێ</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"کەسێکی خۆبەخش و یارمەتیدەرە، هەر کات پێویستت بێت یارمەتیت دەدات."</div>
+                    <div class="review-author">- کەسێکی سوپاسگوزار</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"بەرهەمەکانی بە نەریت و کوالیتی بەرز دروست دەکرێن، کەسێکی پێگەیشتووە."</div>
+                    <div class="review-author">- کەسێکی کۆن کار</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"پێشنیارەکانی وەک فەرزیەک وایە، هەر جێبەجێی بکەیت سەرکەوتوو دەبیت."</div>
+                    <div class="review-author">- شاگردی سەرکەوتوو</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="#" onclick="downloadContact()" class="link-btn save-contact">
+                <span>پاشەکەوتکردنی ناو</span>
+                <i class="fas fa-user-plus"></i>
+            </a>
+            <a href="tel:07508718631" class="link-btn phone-call">
+                <span>پەیوەندی بکە</span>
+                <i class="fas fa-phone-alt"></i>
+            </a>
+            <a href="https://wa.me/9647508718631?text=سڵاو، دەمەوێت دەربارەی کارەکانتان پرسیار بکەم" class="link-btn whatsapp" target="_blank">
+                <span>واتساپ</span>
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.facebook.com/share/16WtuWgNn8/" class="link-btn facebook" target="_blank">
+                <span>فەیسبووک</span>
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/krn_pshdar?igsh=dmx3MDJnd3lnZHFn" class="link-btn instagram" target="_blank">
+                <span>ئینستاگرام</span>
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@krn_pshdar?_r=1&_t=ZS-91j9NjVeymr" class="link-btn tiktok" target="_blank">
+                <span>تیکتۆک</span>
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
+
+        <div class="faq-section">
+            <h3 class="faq-title">پرسیارەکان</h3>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>ناونێشانی دووکانەکەتان لەکوێیە،؟</span>
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="faq-answer"><p>سڵاو بەڕێز ناونێشانی دووکانی ئێمە ناوبازاڕی قەڵادزێ جادەی ئاسایشی کۆن بەرانبەر ڕەوزەی ناوبازاڕ</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>چۆن داواکاری تۆمار بکەم؟</span>
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="faq-answer"><p>لە ڕێگەی واتساپ یان پەیوەندی تەلەفۆنییەوە دەتوانیت پەیوەندیمان پێوە بکەیت.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>گەیاندنتان هەیە،؟</span>
+                    <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="faq-answer"><p>سڵاو بەڕێز گەیاندنمان هەیە بۆسەرجەم شارەکان</p></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>KRN Design © 2025</span>
+            <div class="view-count"><i class="fas fa-eye"></i> 1.2k</div>
+        </div>
+    </div>
+
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-box">
+            <h3>سکان بکە</h3>
+            <img id="qrImage" class="qr-image" src="" alt="QR Code">
+            <p>بۆ کردنەوەی ئەم ماڵپەڕە</p>
+            <button class="close-qr" onclick="toggleQR()">داخستن</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toastMsg">لینکەکە کۆپی کرا!</div>
+
+    <script>
+        const counters = document.querySelectorAll('.stat-num');
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText.replace('+', '');
+                const inc = target > 10 ? target / 100 : 1; 
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc) + (counter.getAttribute('data-target').includes('+') ? '+' : '');
+                    setTimeout(updateCount, 40);
+                } else {
+                    counter.innerText = target + (counter.getAttribute('data-target').includes('+') ? '+' : '');
+                }
+            };
+            updateCount();
+        });
+
+        function updateStatus() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // گۆڕینی کات بۆ خولەک بۆ دیقەتی زیاتر
+            // 9:00 بەیانی = 540 خولەک
+            // 10:30 شەو = 22:30 = 1350 خولەک
+            
+            const totalCurrentMinutes = (hour * 60) + minute;
+            const openTime = 9 * 60; // 540
+            const closeTime = (22 * 60) + 30; // 1350
+
+            const pill = document.getElementById('statusPill');
+            const dot = pill.querySelector('.status-dot');
+            const text = document.getElementById('statusText');
+            
+            // --- بەشی نوسینی زیرەک ---
+            const marqueeText = document.getElementById('marqueeText');
+            const baseMessage = "بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو";
+
+            if (totalCurrentMinutes >= openTime && totalCurrentMinutes < closeTime) {
+                text.innerText = "دووکان کراوەیە"; 
+                text.style.color = "#00ff00"; 
+                dot.style.background = "#00ff00"; 
+                dot.style.boxShadow = "0 0 10px #00ff00";
+                // نوێکردنەوەی نوسینی جوڵاو (کراوە)
+                marqueeText.innerText = baseMessage + " - ئێستا کراوەیە 🟢";
+            } else {
+                text.innerText = "دووکان داخراوە"; 
+                text.style.color = "#ff3333"; 
+                dot.style.background = "#ff3333"; 
+                dot.style.boxShadow = "0 0 10px #ff3333";
+                // نوێکردنەوەی نوسینی جوڵاو (داخراوە)
+                marqueeText.innerText = baseMessage + " - ئێستا دووکان داخراوە 🔴";
+            }
+        }
+        updateStatus(); setInterval(updateStatus, 60000);
+
+        function downloadContact() {
+            const name = "Kamaran Pshdari";
+            const phone = "07508718631";
+            const email = "info@krn.com";
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+            const blob = new Blob([vcard], { type: "text/vcard" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = "Kamaran_Pshdari.vcf";
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                });
+                if (!isActive) {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                }
+            });
+        });
+
+        const textElement = document.getElementById('typing-name');
+        const textToType = "کامەران پشدەری";
+        let index = 0;
+        function typeWriter() {
+            if (index < textToType.length) {
+                textElement.innerHTML += textToType.charAt(index);
+                index++;
+                setTimeout(typeWriter, 150);
+            }
+        }
+        setTimeout(typeWriter, 1000);
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('toastMsg');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            });
+        }
+
+        function toggleQR() {
+            const modal = document.getElementById('qrModal');
+            const qrImage = document.getElementById('qrImage');
+            if (!modal.classList.contains('active')) {
+                const url = window.location.href;
+                qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${url}`;
+            }
+            modal.classList.toggle('active');
+        }
+
+        // کۆدی دوگمەی گەڕانەوە بۆ سەرەوە
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('active');
+            } else {
+                scrollTopBtn.classList.remove('active');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
