@@ -83,8 +83,20 @@
         .action-btn {
             font-size: 1.3rem; color: #fff; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
         }
         .action-btn:hover { color: #00C6FF; transform: scale(1.2); }
+
+        /* ئەنیمەیشنی دوگمەی میوزیک کاتێک کار دەکات */
+        .music-playing {
+            color: #00ff00 !important;
+            animation: pulseMusic 1.5s infinite;
+        }
+        @keyframes pulseMusic {
+            0% { transform: scale(1); text-shadow: 0 0 0 rgba(0, 255, 0, 0.7); }
+            50% { transform: scale(1.2); text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
+            100% { transform: scale(1); text-shadow: 0 0 0 rgba(0, 255, 0, 0.7); }
+        }
 
         .profile-img-container {
             width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; padding: 5px;
@@ -351,6 +363,11 @@
     <div class="background-orb orb-1"></div>
     <div class="background-orb orb-2"></div>
 
+    <audio id="bgAudio" loop hidden>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
         <i class="fas fa-chevron-up"></i>
     </div>
@@ -370,6 +387,7 @@
         </div>
 
         <div class="action-bar">
+            <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
             <div class="action-btn" onclick="copyLink()" title="کۆپیکردنی لینک"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
             <a href="https://maps.google.com" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
@@ -430,149 +448,14 @@
                 <div class="review-card">
                     <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
                     <div class="review-text">"دەستتان خۆش بێت بەڕاستی کارەکەتان زۆر جوان و ناوازە بوو، زۆر لێی ڕازیم."</div>
-                    <div class="review-author">- عەلی کەریم</div>
+                    <div class="review-author">- ئەحمەد کەریم</div>
                 </div>
                 <div class="review-card">
                     <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
                     <div class="review-text">"خزمەتگوزارییەکانتان زۆر خێران و نرخەکانتان زۆر گونجاون، سەرکەوتوو بن."</div>
                     <div class="review-author">- ڕێباز عەلی</div>
                 </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"باشترین شوێن بۆ ئەوەی کارەکانت بە دڵنیاییەوە ئەنجام بدەیت."</div>
-                    <div class="review-author">- سارا محەمەد</div>
                 </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کوالیتی بەرهەمەکان زۆر بەرزە، پێشنیار دەکەم بۆ هەموو کەسێک."</div>
-                    <div class="review-author">- عەلی حەسەن</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پشتگیری کڕیاران زۆر باشە، هەمو کێشەیەکت ڕوون دەکەنەوە."</div>
-                    <div class="review-author">- کەریم ئەحمەد</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"خێرایی گەیاندن زۆر باشە، لە ماوەیەکی کەمدا گەیشتە دەستمان."</div>
-                    <div class="review-author">- هۆشەر محەمەد</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"نرخی گونجاو و کوالیتی زۆر باش، بە ڕاستی کەسێکی پلە یەک."</div>
-                    <div class="review-author">- ڕەزا عەباس</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پێشنیاری تایبەتیان پێشکەش دەکەن، زۆر ڕازیم لە خزمەتگوزاریەکە."</div>
-                    <div class="review-author">- سیروان عەلی</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پڕۆژەکەم بە باشترین شێوە تەواو کرد، زۆر سوپاس بۆ هاوکاریەکان."</div>
-                    <div class="review-author">- میران کەریم</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پێشنیارێکی زۆر باشم پێشکەش کرد، ئێستا کاری زۆر باشم هەیە."</div>
-                    <div class="review-author">- هەڤال عەزیز</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کەسێکی زۆر پێگەیشتوو و پسپۆڕە، هەمو پرسیارێکت ڕوون دەکاتەوە."</div>
-                    <div class="review-author">- شەھاب نادر</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کاری دەستکردی زۆر جوان و پڕ وردەکاریە، بە ڕاستی حەزێکی تایبەتی هەیە."</div>
-                    <div class="review-author">- ڕۆژان محەمەد</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پاشەکەوتکردنی پارە و کات، بەرهەمەکەی بە نرخی زۆر باشە."</div>
-                    <div class="review-author">- ئاراس فەرهاد</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پەیوەندیەکانی دوای فرۆشتن زۆر باشە، هەر کات پرسیارێکم هەبوو وەڵامم دەداەوە."</div>
-                    <div class="review-author">- دڵشاد حەمە</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"بەرهەمەکانی تایبەت و جیاوازن، لە بازاڕدا شتێکی تایبەت و ناوازەن."</div>
-                    <div class="review-author">- هەڵەبجە عەلی</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پلانی بازرگانیام بە سەرکەوتویی جێبەجێ کرد، سوپاس بۆ یارمەتیەکان."</div>
-                    <div class="review-author">- بازرگان کەریم</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"وردبینی و وردەکاری لە کارەکاندا زۆر بەرزە، هەمو شتێک لە شوێنی خۆیدایە."</div>
-                    <div class="review-author">- ئەندازیار سیروان</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کۆمپانیاکەم پێشکەوتنی زۆری بەخشی، ئێستا ژمارەیەکی زۆر کڕیاری هەیە."</div>
-                    <div class="review-author">- بەڕێوبەر عەباس</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"نوێکردنەوە و کێشەچارەسەری خێرا، هەر کێشەیەک ڕووبدات خێرا چارەسەری دەکەن."</div>
-                    <div class="review-author">- کەسب کار محەمەد</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پڕۆژە گەورەکان بە سەرکەوتویی تەواو دەکات، کەسێکی متمانەپێکراوە."</div>
-                    <div class="review-author">- پڕۆژە مەعروف</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"فیکری بازرگانی و مارکێتینگ زۆر باشە، کەسێکی خەڵک ناسە."</div>
-                    <div class="review-author">- بازرگان سەلام</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کوالیتی بەرهەم و خزمەتگوزاری هەردووکیان زۆر بەرزن، پێشنیار دەکەم."</div>
-                    <div class="review-author">- دەستە سەربەرز</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پلانی دروست و ڕێک و پێک، هەمو هەنگاوەکان ڕوون و ڕەوانە."</div>
-                    <div class="review-author">- پلان دانەر عەلی</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"تەکنەلۆژیای نوێ و پێشکەوتوو بەکاردەهێنێت، لە پێشەنگی تەکنەلۆژیادایە."</div>
-                    <div class="review-author">- تەکنەلۆژیاسان ڕەزا</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کەسێکی وەفادار و پاکەت، هەرچی پێت بڵێ دەیکات، متمانەی تێدەکەم."</div>
-                    <div class="review-author">- هاورێی دەست پێک</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"دەستکەوتەکانم زۆر زیاد کردووە، سوپاس بۆ ڕێنماییە پسپۆڕەکان."</div>
-                    <div class="review-author">- بازرگان نوێ</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"کەسێکی خۆبەخش و یارمەتیدەرە، هەر کات پێویستت بێت یارمەتیت دەدات."</div>
-                    <div class="review-author">- کەسێکی سوپاسگوزار</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"بەرهەمەکانی بە نەریت و کوالیتی بەرز دروست دەکرێن، کەسێکی پێگەیشتووە."</div>
-                    <div class="review-author">- کەسێکی کۆن کار</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"پێشنیارەکانی وەک فەرزیەک وایە، هەر جێبەجێی بکەیت سەرکەوتوو دەبیت."</div>
-                    <div class="review-author">- شاگردی سەرکەوتوو</div>
-                </div>
-            </div>
         </div>
 
         <div class="social-links">
@@ -613,7 +496,7 @@
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>چۆن داواکاری تۆمار بکەم؟</span>
+                    <span>چۆن داواکاری تۆماربکەم؟</span>
                     <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="faq-answer"><p>لە ڕێگەی واتساپ یان پەیوەندی تەلەفۆنییەوە دەتوانیت پەیوەندیمان پێوە بکەیت.</p></div>
@@ -645,6 +528,45 @@
     <div class="toast" id="toastMsg">لینکەکە کۆپی کرا!</div>
 
     <script>
+        // --- کۆدی بەکارخستنی مۆسیقا ---
+        const bgAudio = document.getElementById('bgAudio');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgAudio.pause();
+                isMusicPlaying = false;
+                musicBtn.classList.remove('music-playing');
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgAudio.play();
+                isMusicPlaying = true;
+                musicBtn.classList.add('music-playing');
+                musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        }
+
+        // هەوڵدان بۆ لێدانی ئۆتۆماتیکی
+        window.addEventListener('load', function() {
+            var promise = bgAudio.play();
+            if (promise !== undefined) {
+                promise.then(_ => {
+                    isMusicPlaying = true;
+                    musicBtn.classList.add('music-playing');
+                    musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }).catch(error => {
+                    // ئەگەر وێبگەڕ ڕێگەی نەدا، چاوەڕێی یەکەم کلیک دەکات
+                    document.body.addEventListener('click', function() {
+                        if (!isMusicPlaying) {
+                            toggleMusic();
+                        }
+                    }, { once: true });
+                });
+            }
+        });
+
+        // --- کۆدەکانی تر وەک خۆیان ---
         const counters = document.querySelectorAll('.stat-num');
         counters.forEach(counter => {
             const updateCount = () => {
@@ -667,10 +589,6 @@
             const hour = now.getHours();
             const minute = now.getMinutes();
             
-            // گۆڕینی کات بۆ خولەک بۆ دیقەتی زیاتر
-            // 9:00 بەیانی = 540 خولەک
-            // 10:30 شەو = 22:30 = 1350 خولەک
-            
             const totalCurrentMinutes = (hour * 60) + minute;
             const openTime = 9 * 60; // 540
             const closeTime = (22 * 60) + 30; // 1350
@@ -679,7 +597,6 @@
             const dot = pill.querySelector('.status-dot');
             const text = document.getElementById('statusText');
             
-            // --- بەشی نوسینی زیرەک ---
             const marqueeText = document.getElementById('marqueeText');
             const baseMessage = "بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو";
 
@@ -688,14 +605,12 @@
                 text.style.color = "#00ff00"; 
                 dot.style.background = "#00ff00"; 
                 dot.style.boxShadow = "0 0 10px #00ff00";
-                // نوێکردنەوەی نوسینی جوڵاو (کراوە)
                 marqueeText.innerText = baseMessage + " - ئێستا کراوەیە 🟢";
             } else {
                 text.innerText = "دووکان داخراوە"; 
                 text.style.color = "#ff3333"; 
                 dot.style.background = "#ff3333"; 
                 dot.style.boxShadow = "0 0 10px #ff3333";
-                // نوێکردنەوەی نوسینی جوڵاو (داخراوە)
                 marqueeText.innerText = baseMessage + " - ئێستا دووکان داخراوە 🔴";
             }
         }
@@ -763,7 +678,6 @@
             modal.classList.toggle('active');
         }
 
-        // کۆدی دوگمەی گەڕانەوە بۆ سەرەوە
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
