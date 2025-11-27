@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>KRN - Kamaran Pshdari</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="پەڕەی فەرمی کامەران پشدەری - باشترین خزمەتگوزاری و بەرهەم">
+    <meta property="og:title" content="KRN - Kamaran Pshdari">
+    <meta property="og:description" content="بەخێربێن بۆ پەڕەی فەرمی ئێمە، لێرە هەموو زانیارییەکان دەستدەکەوێت.">
+    <meta property="og:image" content="me.jpg"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -17,6 +21,7 @@
             padding: 40px 15px; color: white; overflow-x: hidden; position: relative;
         }
 
+        /* باکگراوند و ئەنیمەیشن */
         .background-orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; animation: floatOrb 10s infinite alternate; }
         .orb-1 { width: 300px; height: 300px; background: #ff00cc; top: -50px; left: -50px; }
         .orb-2 { width: 400px; height: 400px; background: #333399; bottom: -100px; right: -100px; animation-delay: -5s; }
@@ -34,32 +39,19 @@
             overflow: hidden;
         }
 
-        /* --- نوسینی جوڵاو (Marquee) --- */
+        /* --- نوسینی جوڵاو --- */
         .welcome-marquee {
-            width: 100%;
-            height: 45px;
-            background: rgba(0, 198, 255, 0.15);
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
-            position: relative;
-            overflow: hidden;
+            width: 100%; height: 45px; background: rgba(0, 198, 255, 0.15);
+            border: 1px solid rgba(0, 198, 255, 0.3); border-radius: 15px;
+            margin-bottom: 25px; box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+            position: relative; overflow: hidden;
         }
-        
         .marquee-content {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
-            width: max-content;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-shadow: 0 0 5px rgba(0, 198, 255, 0.8);
+            position: absolute; top: 50%; transform: translateY(-50%);
+            white-space: nowrap; width: max-content; color: #fff; font-weight: 700;
+            font-size: 0.9rem; text-shadow: 0 0 5px rgba(0, 198, 255, 0.8);
             animation: moveLeftToRight 15s linear infinite;
         }
-
         @keyframes moveLeftToRight {
             0% { left: 0; transform: translate(-100%, -50%); }
             100% { left: 100%; transform: translate(0%, -50%); }
@@ -67,31 +59,17 @@
 
         /* --- گروپکردنی دوگمەکان --- */
         .action-bar {
-            position: relative; 
-            margin: 25px auto 10px auto;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px 30px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: fit-content;
+            position: relative; margin: 25px auto 10px auto; display: flex; justify-content: center;
+            gap: 25px; background: rgba(0, 0, 0, 0.3); padding: 12px 30px;
+            border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-
         .action-btn {
             font-size: 1.3rem; color: #fff; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none;
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
         }
         .action-btn:hover { color: #00C6FF; transform: scale(1.2); }
-
-        /* ئەنیمەیشنی دوگمەی میوزیک کاتێک کار دەکات */
-        .music-playing {
-            color: #00ff00 !important;
-            animation: pulseMusic 1.5s infinite;
-        }
+        .music-playing { color: #00ff00 !important; animation: pulseMusic 1.5s infinite; }
         @keyframes pulseMusic {
             0% { transform: scale(1); text-shadow: 0 0 0 rgba(0, 255, 0, 0.7); }
             50% { transform: scale(1.2); text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
@@ -110,25 +88,17 @@
             background: #222; border: 1px solid rgba(255,255,255,0.2);
             padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
             display: flex; align-items: center; gap: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-            white-space: nowrap;
-            z-index: 10;
+            white-space: nowrap; z-index: 10;
         }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; }
 
         .logo-text {
-            font-size: 5rem;
-            font-weight: 900;
-            letter-spacing: 6px;
+            font-size: 5rem; font-weight: 900; letter-spacing: 6px;
             background: linear-gradient(to right, #ffffff, #00C6FF, #b3b3b3, #00C6FF, #ffffff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineLogo 4s linear infinite;
-            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
-            margin-bottom: 5px; 
-            margin-top: 10px;
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shineLogo 4s linear infinite; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
+            margin-bottom: 5px; margin-top: 10px;
         }
-        
         @keyframes shineLogo { to { background-position: 200% center; } }
 
         .name-wrapper { height: 30px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; }
@@ -136,6 +106,7 @@
             font-size: 1.4rem; font-weight: 700; color: #00C6FF;
             border-left: 2px solid #00C6FF; padding-left: 5px; animation: blink 0.7s infinite;
         }
+        @keyframes blink { 50% { border-color: transparent; } }
 
         .about-badge {
             display: inline-block; background: rgba(255, 255, 255, 0.08);
@@ -147,7 +118,6 @@
         .about-badge::after { content: ''; display: block; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, #FFD700, transparent); margin: 2px auto 0; border-radius: 2px; }
         .about-badge::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shineBadge 4s infinite; }
         @keyframes shineBadge { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
 
         .stats-container {
             display: flex; justify-content: space-around; width: 100%; margin-bottom: 25px;
@@ -165,8 +135,24 @@
 
         .slider-container { width: 100%; overflow: hidden; margin-bottom: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
         .slider-track { display: flex; width: 300%; animation: sliderAnimation 12s infinite ease-in-out; }
+        /* وەستانی سلايدەر کاتێک ماوس دەچێتە سەری */
+        .slider-track:hover { animation-play-state: paused; }
         .slide-img { width: 100%; height: 180px; object-fit: cover; }
         @keyframes sliderAnimation { 0%, 30% { transform: translateX(0); } 35%, 65% { transform: translateX(33.33%); } 70%, 100% { transform: translateX(66.66%); } }
+
+        /* --- بەشی نامەی خێرا (NEW) --- */
+        .quick-msg-box {
+            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 15px; margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1); display: flex; gap: 10px; flex-direction: column;
+        }
+        .quick-msg-input {
+            width: 100%; padding: 12px; border-radius: 10px; border: none; background: rgba(0,0,0,0.3); color: white; outline: none; text-align: right;
+        }
+        .quick-msg-btn {
+            background: #25D366; color: white; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .quick-msg-btn:hover { background: #1ebc57; }
+
 
         .reviews-section { margin-bottom: 35px; text-align: right; }
         .reviews-title { font-size: 1rem; color: #ccc; margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
@@ -178,35 +164,16 @@
         .review-text { font-size: 0.8rem; color: #ddd; line-height: 1.5; }
         .review-author { font-size: 0.75rem; color: #00C6FF; font-weight: bold; text-align: left; margin-top: 5px; }
 
-        /* --- ئەنیمەیشن و ڕەنگی دوگمەکان --- */
         .social-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
-        
         @keyframes popOutColor {
-            0%, 100% { 
-                transform: scale(1); 
-                z-index: 1; 
-                background: rgba(30, 30, 30, 0.6); 
-                border-color: rgba(255,255,255,0.05);
-                color: #fff;
-            }
-            50% { 
-                transform: scale(1.12); 
-                z-index: 10; 
-                box-shadow: 0 10px 25px var(--brand-shadow); 
-                background: var(--brand-bg); 
-                border-color: var(--brand-bg);
-                color: var(--brand-text);
-            }
+            0%, 100% { transform: scale(1); z-index: 1; background: rgba(30, 30, 30, 0.6); border-color: rgba(255,255,255,0.05); color: #fff; }
+            50% { transform: scale(1.12); z-index: 10; box-shadow: 0 10px 25px var(--brand-shadow); background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); }
         }
 
         .link-btn {
-            display: flex; align-items: center; justify-content: space-between;
-            text-decoration: none; padding: 16px 22px; border-radius: 18px;
-            color: white; font-weight: bold; font-size: 1rem;
-            transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(30, 30, 30, 0.6); position: relative; overflow: hidden;
-            animation: popOutColor 4s infinite ease-in-out;
-            --brand-text: #fff; 
+            display: flex; align-items: center; justify-content: space-between; text-decoration: none; padding: 16px 22px; border-radius: 18px;
+            color: white; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(30, 30, 30, 0.6); position: relative; overflow: hidden; animation: popOutColor 4s infinite ease-in-out; --brand-text: #fff; 
         }
         
         .social-links .link-btn:nth-child(1) { animation-delay: 0s; }
@@ -216,87 +183,31 @@
         .social-links .link-btn:nth-child(5) { animation-delay: 1.2s; }
         .social-links .link-btn:nth-child(6) { animation-delay: 1.5s; }
 
-        .save-contact { 
-            --brand-bg: linear-gradient(90deg, #FFD700, #FDB931); 
-            --brand-shadow: rgba(255, 215, 0, 0.4);
-            --brand-text: #000; 
-        }
-        .phone-call { 
-            --brand-bg: linear-gradient(90deg, #11998e, #38ef7d); 
-            --brand-shadow: rgba(56, 239, 125, 0.4);
-        }
-        .whatsapp { 
-            --brand-bg: #25D366; 
-            --brand-shadow: rgba(37, 211, 102, 0.4);
-        }
-        .facebook { 
-            --brand-bg: #1877f2; 
-            --brand-shadow: rgba(24, 119, 242, 0.4);
-        }
-        .instagram { 
-            --brand-bg: linear-gradient(45deg, #f09433, #dc2743, #bc1888); 
-            --brand-shadow: rgba(220, 39, 67, 0.4);
-        }
-        .tiktok { 
-            --brand-bg: #000000; 
-            --brand-shadow: rgba(255, 255, 255, 0.4);
-            border-color: rgba(255,255,255,0.2); 
-        }
+        .save-contact { --brand-bg: linear-gradient(90deg, #FFD700, #FDB931); --brand-shadow: rgba(255, 215, 0, 0.4); --brand-text: #000; }
+        .phone-call { --brand-bg: linear-gradient(90deg, #11998e, #38ef7d); --brand-shadow: rgba(56, 239, 125, 0.4); }
+        .whatsapp { --brand-bg: #25D366; --brand-shadow: rgba(37, 211, 102, 0.4); }
+        .facebook { --brand-bg: #1877f2; --brand-shadow: rgba(24, 119, 242, 0.4); }
+        .instagram { --brand-bg: linear-gradient(45deg, #f09433, #dc2743, #bc1888); --brand-shadow: rgba(220, 39, 67, 0.4); }
+        .tiktok { --brand-bg: #000000; --brand-shadow: rgba(255, 255, 255, 0.4); border-color: rgba(255,255,255,0.2); }
 
         .link-btn:hover { 
-            transform: translateY(-3px) scale(1.05); 
-            animation-play-state: paused;
-            z-index: 20;
-            background: var(--brand-bg);
-            border-color: var(--brand-bg);
-            color: var(--brand-text);
-            box-shadow: 0 10px 25px var(--brand-shadow);
+            transform: translateY(-3px) scale(1.05); animation-play-state: paused; z-index: 20;
+            background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); box-shadow: 0 10px 25px var(--brand-shadow);
         }
 
-        /* --- چاککردنی ستایلی پرسیارەکان (Fix for FAQ) --- */
         .faq-section { text-align: center; margin-top: 10px; }
         .faq-title { font-size: 1.1rem; margin-bottom: 20px; color: #fff; text-align: center; position: relative; display: inline-block; }
         .faq-title::after { content: ''; display: block; width: 40px; height: 3px; background: #00C6FF; margin: 5px auto 0; border-radius: 2px; }
         
-        .faq-item {
-            margin-bottom: 12px;
-            border-radius: 18px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
-            transition: 0.3s;
-            text-align: right;
-        }
+        .faq-item { margin-bottom: 12px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: 0.3s; text-align: right; }
         .faq-item.active { background: rgba(30, 30, 35, 0.9); border-color: rgba(0, 198, 255, 0.5); }
         
-        .faq-question {
-            padding: 16px 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #e0e0e0;
-            line-height: 1.5;
-        }
-        
-        .faq-question span {
-            flex: 1;
-            margin-left: 10px;
-            word-wrap: break-word;
-        }
-
-        .faq-icon {
-            transition: 0.3s;
-            color: #666;
-            flex-shrink: 0;
-        }
-        
+        .faq-question { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: bold; color: #e0e0e0; line-height: 1.5; }
+        .faq-question span { flex: 1; margin-left: 10px; word-wrap: break-word; }
+        .faq-icon { transition: 0.3s; color: #666; flex-shrink: 0; }
         .faq-item.active .faq-icon { transform: rotate(180deg); color: #00C6FF; }
         .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s ease; background: rgba(0,0,0,0.2); }
         .faq-answer p { padding: 0 20px 20px; color: #bbb; font-size: 0.85rem; line-height: 1.7; text-align: right; }
-        /* ------------------------------------------------ */
 
         .footer { margin-top: 40px; font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;}
         .view-count { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
@@ -305,40 +216,18 @@
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
             background: rgba(0, 198, 255, 0.9); color: black; padding: 12px 25px;
             border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 100; opacity: 0; pointer-events: none;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 100; opacity: 0; pointer-events: none;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* --- ستایلی دوگمەی گەڕانەوە بۆ سەرەوە --- */
         .scroll-top-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 45px;
-            height: 45px;
-            background: rgba(0, 198, 255, 0.9);
-            color: #000;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 999;
-            transform: translateY(20px);
+            position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
+            background: rgba(0, 198, 255, 0.9); color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 999; transform: translateY(20px);
         }
-        .scroll-top-btn.active {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0);
-        }
-        .scroll-top-btn:hover {
-            transform: scale(1.1);
-            background: #fff;
-        }
+        .scroll-top-btn.active { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .scroll-top-btn:hover { transform: scale(1.1); background: #fff; }
 
         .qr-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -353,9 +242,7 @@
         }
         .qr-modal.active .qr-box { transform: scale(1); }
         .qr-image { width: 200px; height: 200px; margin-bottom: 10px; }
-        .close-qr {
-            margin-top: 10px; background: #333; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer;
-        }
+        .close-qr { margin-top: 10px; background: #333; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -365,7 +252,6 @@
 
     <audio id="bgAudio" loop hidden>
         <source src="music.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
     <div class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
@@ -379,7 +265,7 @@
         </div>
 
         <div class="profile-img-container">
-            <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img">
+            <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
             <div class="status-pill" id="statusPill">
                 <div class="status-dot"></div>
                 <span id="statusText">...</span>
@@ -388,7 +274,7 @@
 
         <div class="action-bar">
             <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
-            <div class="action-btn" onclick="copyLink()" title="کۆپیکردنی لینک"><i class="fas fa-share-alt"></i></div>
+            <div class="action-btn" onclick="shareOrCopy()" title="شەیرکردن"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
             <a href="https://maps.google.com" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
         </div>
@@ -418,44 +304,17 @@
             </div>
         </div>
 
-        <div class="services-grid">
-            <div class="service-item">
-                <div class="service-icon"><i class="fas fa-truck-fast"></i></div>
-                <div class="service-title">گەیاندنی خێرا</div>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="service-title">زەمانەت</div>
-            </div>
-            <div class="service-item">
-                <div class="service-icon"><i class="fas fa-headset"></i></div>
-                <div class="service-title">پشتگیری ٢٤/٧</div>
+       <div class="slider-container">
+            <div class="slider-track">
+                <img src="https://via.placeholder.com/400x180/00C6FF/ffffff?text=Product+1" class="slide-img" alt="First Image">
+                <img src="https://via.placeholder.com/400x180/333399/ffffff?text=Product+2" class="slide-img" alt="Second Image">
+                <img src="https://via.placeholder.com/400x180/ff00cc/ffffff?text=Product+3" class="slide-img" alt="Third Image">
             </div>
         </div>
 
-       <div class="slider-container">
-            <div class="slider-track">
-                <img src="1.jpg" class="slide-img" alt="First Image">
-                
-                <img src="2.jpg" class="slide-img" alt="Second Image">
-                
-                <img src="3.jpg" class="slide-img" alt="Third Image">
-            </div>
-        </div>
-        <div class="reviews-section">
-            <div class="reviews-title">ڕای مشتەرییەکانمان</div>
-            <div class="reviews-scroll">
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"دەستتان خۆش بێت بەڕاستی کارەکەتان زۆر جوان و ناوازە بوو، زۆر لێی ڕازیم."</div>
-                    <div class="review-author">- ئەحمەد کەریم</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"خزمەتگوزارییەکانتان زۆر خێران و نرخەکانتان زۆر گونجاون، سەرکەوتوو بن."</div>
-                    <div class="review-author">- ڕێباز عەلی</div>
-                </div>
-                </div>
+        <div class="quick-msg-box">
+            <input type="text" id="quickMsgInput" class="quick-msg-input" placeholder="پرسیارەکەت لێرە بنووسە...">
+            <button onclick="sendQuickWhatsapp()" class="quick-msg-btn"><i class="fab fa-whatsapp"></i> ناردن بۆ واتساپ</button>
         </div>
 
         <div class="social-links">
@@ -485,6 +344,22 @@
             </a>
         </div>
 
+        <div class="reviews-section">
+            <div class="reviews-title">ڕای مشتەرییەکانمان</div>
+            <div class="reviews-scroll">
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"دەستتان خۆش بێت بەڕاستی کارەکەتان زۆر جوان و ناوازە بوو، زۆر لێی ڕازیم."</div>
+                    <div class="review-author">- ئەحمەد کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"خزمەتگوزارییەکانتان زۆر خێران و نرخەکانتان زۆر گونجاون، سەرکەوتوو بن."</div>
+                    <div class="review-author">- ڕێباز عەلی</div>
+                </div>
+            </div>
+        </div>
+
         <div class="faq-section">
             <h3 class="faq-title">پرسیارەکان</h3>
             <div class="faq-item">
@@ -496,7 +371,7 @@
             </div>
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>چۆن داواکاری تۆماربکەم؟</span>
+                    <span>چۆن داواکاری تۆمار بکەم؟</span>
                     <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="faq-answer"><p>لە ڕێگەی واتساپ یان پەیوەندی تەلەفۆنییەوە دەتوانیت پەیوەندیمان پێوە بکەیت.</p></div>
@@ -547,26 +422,42 @@
             }
         }
 
-        // هەوڵدان بۆ لێدانی ئۆتۆماتیکی
-        window.addEventListener('load', function() {
-            var promise = bgAudio.play();
-            if (promise !== undefined) {
-                promise.then(_ => {
-                    isMusicPlaying = true;
-                    musicBtn.classList.add('music-playing');
-                    musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }).catch(error => {
-                    // ئەگەر وێبگەڕ ڕێگەی نەدا، چاوەڕێی یەکەم کلیک دەکات
-                    document.body.addEventListener('click', function() {
-                        if (!isMusicPlaying) {
-                            toggleMusic();
-                        }
-                    }, { once: true });
-                });
+        document.body.addEventListener('click', function() {
+            if (!isMusicPlaying) {
+                // هەوڵدان بۆ لێدانی مۆسیقا دوای یەکەم کلیک
+                // bgAudio.play().then(() => { isMusicPlaying = true; musicBtn.classList.add('music-playing'); musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }).catch(e => console.log("Audio prevent"));
             }
-        });
+        }, { once: true });
 
-        // --- کۆدەکانی تر وەک خۆیان ---
+        // --- ناردنی نامەی خێرا بۆ واتساپ ---
+        function sendQuickWhatsapp() {
+            const msg = document.getElementById('quickMsgInput').value;
+            if(msg.trim() === "") {
+                alert("تکایە سەرەتا نامەیەک بنووسە");
+                return;
+            }
+            // ژمارە تەلەفۆنەکەت لێرە دابنێ
+            const phone = "9647508718631"; 
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        // --- شەیرکردن (Native Share) ---
+        function shareOrCopy() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'KRN - Kamaran Pshdari',
+                    text: 'سەردانی پڕۆفایلی کامەران پشدەری بکە بۆ بینینی بەرهەمەکان',
+                    url: window.location.href,
+                })
+                .catch((error) => console.log('Error sharing', error));
+            } else {
+                // ئەگەر مۆبایلەکە شەیرکردنی نەبوو، کۆپی دەکات
+                copyLink();
+            }
+        }
+
+        // --- کاونتەرەکان ---
         const counters = document.querySelectorAll('.stat-num');
         counters.forEach(counter => {
             const updateCount = () => {
@@ -590,8 +481,8 @@
             const minute = now.getMinutes();
             
             const totalCurrentMinutes = (hour * 60) + minute;
-            const openTime = 9 * 60; // 540
-            const closeTime = (22 * 60) + 30; // 1350
+            const openTime = 9 * 60; // 09:00
+            const closeTime = (22 * 60) + 30; // 22:30
 
             const pill = document.getElementById('statusPill');
             const dot = pill.querySelector('.status-dot');
@@ -661,10 +552,9 @@
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
                 const toast = document.getElementById('toastMsg');
+                toast.innerText = "لینکەکە کۆپی کرا!";
                 toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
+                setTimeout(() => { toast.classList.remove('show'); }, 3000);
             });
         }
 
@@ -688,10 +578,7 @@
         });
 
         function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
