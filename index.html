@@ -3,78 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>KRN - Kamaran Pshdari</title>
-    <meta name="description" content="پەڕەی فەرمی کامەران پشدەری - باشترین خزمەتگوزاری و بەرهەم">
-    <meta property="og:title" content="KRN - Kamaran Pshdari">
-    <meta property="og:description" content="بەخێربێن بۆ پەڕەی فەرمی ئێمە، لێرە هەموو زانیارییەکان دەستدەکەوێت.">
-    <meta property="og:image" content="me.jpg"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="پەڕەی فەرمی کامەران پشدەری">
+    <meta property="og:image" content="me.jpg">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Kufi Arabic', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background-color: #0f0c29;
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: flex-start;
-            padding: 40px 15px; color: white; overflow-x: hidden; position: relative;
+        /* --- ڕێکخستنی گشتی --- */
+        :root {
+            --bg-color: #0f0c29;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #fff;
+            --text-sec: #ccc;
+            --accent: #00C6FF;
+            --gold: #FFD700;
+            --action-bg: rgba(0, 0, 0, 0.3);
+            --action-icon: #fff;
         }
 
-        /* باکگراوند و ئەنیمەیشن */
-        .background-orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; animation: floatOrb 10s infinite alternate; }
+        body.light-mode {
+            --bg-color: #f0f2f5;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #1a1a1a;
+            --text-sec: #555;
+            --action-bg: rgba(255, 255, 255, 0.9);
+            --action-icon: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Kufi Arabic', sans-serif; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; transition: background-color 0.8s ease, color 0.5s ease; }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 40px 15px; color: var(--text-color); overflow-x: hidden; position: relative;
+        }
+
+        /* --- 1. PRELOADER --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+        }
+        .loader-content {
+            text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+        .loader-logo {
+            font-size: 3.5rem; font-weight: 900; color: #fff; letter-spacing: 10px;
+            text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            animation: glowPulse 3s infinite alternate ease-in-out;
+        }
+        .loader-subtitle {
+            font-size: 1.2rem; color: var(--gold); font-weight: 400; letter-spacing: 2px;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 1.5s ease-out forwards 0.5s; 
+            border-top: 1px solid rgba(255, 215, 0, 0.5); padding-top: 10px; width: 100%;
+        }
+
+        @keyframes glowPulse { from { text-shadow: 0 0 10px var(--accent); transform: scale(1); } to { text-shadow: 0 0 30px var(--accent), 0 0 50px var(--accent); transform: scale(1.05); } }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .hide-preloader { opacity: 0; visibility: hidden; }
+
+        /* Background */
+        .background-orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; animation: floatOrb 15s infinite alternate ease-in-out; }
         .orb-1 { width: 300px; height: 300px; background: #ff00cc; top: -50px; left: -50px; }
         .orb-2 { width: 400px; height: 400px; background: #333399; bottom: -100px; right: -100px; animation-delay: -5s; }
+        body.light-mode .background-orb { opacity: 0.15; }
         @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px; 
             padding: 30px 25px 45px 25px;
             width: 100%; max-width: 420px; text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
             margin-bottom: 20px; position: relative;
             overflow: hidden;
         }
+        body.light-mode .card { box-shadow: 0 25px 50px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
 
-        /* --- نوسینی جوڵاو --- */
+        /* Custom Alert */
+        .custom-alert {
+            position: fixed; top: 25px; left: 50%; transform: translate(-50%, -100px);
+            background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(8px);
+            color: #fff; padding: 8px 20px; border-radius: 30px;
+            font-size: 0.8rem; font-weight: normal;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 8px; z-index: 3000;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid rgba(255, 80, 80, 0.4); opacity: 0; pointer-events: none;
+        }
+        .custom-alert.show { transform: translate(-50%, 0); opacity: 1; }
+        .custom-alert i { color: #ff5050; font-size: 0.9rem; }
+        @keyframes shakeInput { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .input-error { border: 1px solid #ff5050 !important; animation: shakeInput 0.3s ease-in-out; }
+
+        /* --- Scroll Reveal --- */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Smart Greeting */
+        .smart-greeting {
+            font-size: 1.1rem; color: var(--accent); margin-bottom: 20px; font-weight: 900;
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.4); animation: fadeInDown 2s ease;
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
         .welcome-marquee {
             width: 100%; height: 45px; background: rgba(0, 198, 255, 0.15);
             border: 1px solid rgba(0, 198, 255, 0.3); border-radius: 15px;
-            margin-bottom: 25px; box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+            margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
             position: relative; overflow: hidden;
         }
         .marquee-content {
             position: absolute; top: 50%; transform: translateY(-50%);
-            white-space: nowrap; width: max-content; color: #fff; font-weight: 700;
+            white-space: nowrap; width: max-content; color: var(--text-color); font-weight: 700;
             font-size: 0.9rem; text-shadow: 0 0 5px rgba(0, 198, 255, 0.8);
-            animation: moveLeftToRight 15s linear infinite;
+            animation: moveLeftToRight 20s linear infinite;
         }
-        @keyframes moveLeftToRight {
-            0% { left: 0; transform: translate(-100%, -50%); }
-            100% { left: 100%; transform: translate(0%, -50%); }
-        }
+        @keyframes moveLeftToRight { 0% { left: 0; transform: translate(-100%, -50%); } 100% { left: 100%; transform: translate(0%, -50%); } }
 
-        /* --- گروپکردنی دوگمەکان --- */
+        /* --- Updated Action Bar (Progressive Scale) --- */
         .action-bar {
             position: relative; margin: 25px auto 10px auto; display: flex; justify-content: center;
-            gap: 25px; background: rgba(0, 0, 0, 0.3); padding: 12px 30px;
+            gap: 15px; background: var(--action-bg); padding: 12px 20px;
             border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .action-btn {
-            font-size: 1.3rem; color: #fff; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; text-decoration: none;
+        
+        .action-btn { 
+            font-size: 1.2rem; color: var(--action-icon); cursor: pointer; transition: 0.3s; 
+            display: flex; align-items: center; justify-content: center; text-decoration: none; 
+            width: 35px; height: 35px;
+            /* ئەنیمەیشنی نوێ: بێ گۆڕینی ڕەنگ */
+            animation: btnScaleOnly 4s infinite ease-in-out;
         }
-        .action-btn:hover { color: #00C6FF; transform: scale(1.2); }
-        .music-playing { color: #00ff00 !important; animation: pulseMusic 1.5s infinite; }
-        @keyframes pulseMusic {
-            0% { transform: scale(1); text-shadow: 0 0 0 rgba(0, 255, 0, 0.7); }
-            50% { transform: scale(1.2); text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); }
-            100% { transform: scale(1); text-shadow: 0 0 0 rgba(0, 255, 0, 0.7); }
+        
+        @keyframes btnScaleOnly {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(var(--target-scale)); }
         }
+
+        /* پلەبەندی گەورەبوون (Scale) */
+        .action-btn:nth-child(1) { animation-delay: 0s; --target-scale: 1.1; }   /* کەمێک */
+        .action-btn:nth-child(2) { animation-delay: 0.3s; --target-scale: 1.15; } /* زیاتر */
+        .action-btn:nth-child(3) { animation-delay: 0.6s; --target-scale: 1.2; }  /* زیاتر */
+        .action-btn:nth-child(4) { animation-delay: 0.9s; --target-scale: 1.25; } /* زیاتر */
+        .action-btn:nth-child(5) { animation-delay: 1.2s; --target-scale: 1.3; }  /* زۆرترین */
+
+        .action-btn:hover { color: var(--accent); transform: scale(1.2) !important; animation-play-state: paused; }
+        
+        /* ڕەنگی سەوز تەنها کاتێک مۆسیقا لێ دەدات */
+        .music-playing { color: #00ff00 !important; }
 
         .profile-img-container {
             width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; padding: 5px;
@@ -86,7 +176,7 @@
         .status-pill {
             position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) translateY(50%);
             background: #222; border: 1px solid rgba(255,255,255,0.2);
-            padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+            padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: #fff;
             display: flex; align-items: center; gap: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
             white-space: nowrap; z-index: 10;
         }
@@ -96,17 +186,31 @@
             font-size: 5rem; font-weight: 900; letter-spacing: 6px;
             background: linear-gradient(to right, #ffffff, #00C6FF, #b3b3b3, #00C6FF, #ffffff);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shineLogo 4s linear infinite; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
-            margin-bottom: 5px; margin-top: 10px;
+            animation: shineLogo 6s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
+            margin-bottom: 0px; margin-top: 5px;
         }
+        body.light-mode .logo-text { background: linear-gradient(to right, #333, #00C6FF, #555, #00C6FF, #333); -webkit-background-clip: text; }
         @keyframes shineLogo { to { background-position: 200% center; } }
 
-        .name-wrapper { height: 30px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; }
+        .name-wrapper { margin-bottom: 2px; margin-top: -5px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .name-text {
-            font-size: 1.4rem; font-weight: 700; color: #00C6FF;
-            border-left: 2px solid #00C6FF; padding-left: 5px; animation: blink 0.7s infinite;
+            font-size: 1.4rem; font-weight: 700; color: var(--accent);
+            border-left: 2px solid var(--accent); padding-left: 5px;
         }
-        @keyframes blink { 50% { border-color: transparent; } }
+
+        /* Rotating Text */
+        .sub-text-wrapper {
+            height: 40px; overflow: hidden; 
+            margin-bottom: 20px; margin-top: 0px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .rotating-text {
+            font-size: 1rem; color: var(--text-sec); font-weight: bold; letter-spacing: 1px;
+            line-height: 1.5; padding-bottom: 5px;
+        }
+        .cursor { display: inline-block; width: 2px; height: 16px; background-color: var(--accent); animation: blinkCursor 0.7s infinite; margin-right: 3px; vertical-align: middle; }
+        @keyframes blinkCursor { 50% { opacity: 0; } }
 
         .about-badge {
             display: inline-block; background: rgba(255, 255, 255, 0.08);
@@ -114,138 +218,128 @@
             border-radius: 50px; margin-bottom: 25px; position: relative; overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .about-text { font-size: 0.85rem; color: #e0e0e0; font-weight: 400; }
+        body.light-mode .about-badge { background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
+        .about-text { font-size: 0.85rem; color: var(--text-sec); font-weight: 400; }
         .about-badge::after { content: ''; display: block; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, #FFD700, transparent); margin: 2px auto 0; border-radius: 2px; }
-        .about-badge::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shineBadge 4s infinite; }
-        @keyframes shineBadge { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
 
         .stats-container {
             display: flex; justify-content: space-around; width: 100%; margin-bottom: 25px;
             background: rgba(0,0,0,0.2); border-radius: 20px; padding: 15px 5px;
         }
+        body.light-mode .stats-container { background: rgba(0,0,0,0.05); }
         .stat-box { text-align: center; }
         .stat-num { font-size: 1.3rem; font-weight: 900; color: #FFD700; }
-        .stat-label { font-size: 0.7rem; color: #aaa; margin-top: 3px; }
-
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
-        .service-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .service-item:hover { background: rgba(0, 198, 255, 0.1); transform: translateY(-3px); }
-        .service-icon { font-size: 1.2rem; color: #FFD700; margin-bottom: 5px; }
-        .service-title { font-size: 0.7rem; color: #ddd; }
+        .stat-label { font-size: 0.7rem; color: var(--text-sec); margin-top: 3px; }
 
         .slider-container { width: 100%; overflow: hidden; margin-bottom: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
-        .slider-track { display: flex; width: 300%; animation: sliderAnimation 12s infinite ease-in-out; }
-        /* وەستانی سلايدەر کاتێک ماوس دەچێتە سەری */
+        .slider-track { display: flex; width: 300%; animation: sliderAnimation 15s infinite ease-in-out; }
         .slider-track:hover { animation-play-state: paused; }
-        .slide-img { width: 100%; height: 180px; object-fit: cover; }
+        .slide-img { width: 100%; height: 180px; object-fit: cover; cursor: pointer; transition: transform 0.5s ease;}
+        .slide-img:hover { transform: scale(1.03); }
         @keyframes sliderAnimation { 0%, 30% { transform: translateX(0); } 35%, 65% { transform: translateX(33.33%); } 70%, 100% { transform: translateX(66.66%); } }
 
-        /* --- بەشی نامەی خێرا (NEW) --- */
         .quick-msg-box {
-            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 15px; margin-bottom: 25px;
+            background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1); display: flex; gap: 10px; flex-direction: column;
         }
-        .quick-msg-input {
-            width: 100%; padding: 12px; border-radius: 10px; border: none; background: rgba(0,0,0,0.3); color: white; outline: none; text-align: right;
-        }
-        .quick-msg-btn {
-            background: #25D366; color: white; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
+        body.light-mode .quick-msg-box { border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.03); }
+        .quick-msg-input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: rgba(0,0,0,0.3); color: white; outline: none; text-align: right; transition: 0.3s; }
+        body.light-mode .quick-msg-input { background: #fff; color: #333; border: 1px solid #ddd; }
+        .quick-msg-btn { background: #25D366; color: white; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .quick-msg-btn:hover { background: #1ebc57; }
 
-
         .reviews-section { margin-bottom: 35px; text-align: right; }
-        .reviews-title { font-size: 1rem; color: #ccc; margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
+        .reviews-title { font-size: 1rem; color: var(--text-sec); margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
         .reviews-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
         .reviews-scroll::-webkit-scrollbar { display: none; }
         .review-card { min-width: 220px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
+        body.light-mode .review-card { background: #fff; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .review-header { display: flex; justify-content: space-between; align-items: center; }
         .stars { color: #FFD700; font-size: 0.8rem; }
-        .review-text { font-size: 0.8rem; color: #ddd; line-height: 1.5; }
-        .review-author { font-size: 0.75rem; color: #00C6FF; font-weight: bold; text-align: left; margin-top: 5px; }
+        .review-text { font-size: 0.8rem; color: var(--text-sec); line-height: 1.5; }
+        .review-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; text-align: left; margin-top: 5px; }
 
         .social-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
         @keyframes popOutColor {
             0%, 100% { transform: scale(1); z-index: 1; background: rgba(30, 30, 30, 0.6); border-color: rgba(255,255,255,0.05); color: #fff; }
-            50% { transform: scale(1.12); z-index: 10; box-shadow: 0 10px 25px var(--brand-shadow); background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); }
+            50% { transform: scale(1.08); z-index: 10; box-shadow: 0 10px 25px var(--brand-shadow); background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); }
         }
-
         .link-btn {
             display: flex; align-items: center; justify-content: space-between; text-decoration: none; padding: 16px 22px; border-radius: 18px;
-            color: white; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(30, 30, 30, 0.6); position: relative; overflow: hidden; animation: popOutColor 4s infinite ease-in-out; --brand-text: #fff; 
+            color: white; font-weight: bold; font-size: 1rem; transition: all 0.5s ease; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(30, 30, 30, 0.6); position: relative; overflow: hidden; animation: popOutColor 5s infinite ease-in-out; --brand-text: #fff; 
         }
-        
+        body.light-mode .link-btn { background: #333; color: #fff; }
         .social-links .link-btn:nth-child(1) { animation-delay: 0s; }
         .social-links .link-btn:nth-child(2) { animation-delay: 0.3s; }
         .social-links .link-btn:nth-child(3) { animation-delay: 0.6s; }
         .social-links .link-btn:nth-child(4) { animation-delay: 0.9s; }
         .social-links .link-btn:nth-child(5) { animation-delay: 1.2s; }
         .social-links .link-btn:nth-child(6) { animation-delay: 1.5s; }
-
         .save-contact { --brand-bg: linear-gradient(90deg, #FFD700, #FDB931); --brand-shadow: rgba(255, 215, 0, 0.4); --brand-text: #000; }
         .phone-call { --brand-bg: linear-gradient(90deg, #11998e, #38ef7d); --brand-shadow: rgba(56, 239, 125, 0.4); }
         .whatsapp { --brand-bg: #25D366; --brand-shadow: rgba(37, 211, 102, 0.4); }
         .facebook { --brand-bg: #1877f2; --brand-shadow: rgba(24, 119, 242, 0.4); }
         .instagram { --brand-bg: linear-gradient(45deg, #f09433, #dc2743, #bc1888); --brand-shadow: rgba(220, 39, 67, 0.4); }
         .tiktok { --brand-bg: #000000; --brand-shadow: rgba(255, 255, 255, 0.4); border-color: rgba(255,255,255,0.2); }
-
-        .link-btn:hover { 
-            transform: translateY(-3px) scale(1.05); animation-play-state: paused; z-index: 20;
-            background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); box-shadow: 0 10px 25px var(--brand-shadow);
-        }
+        .link-btn:hover { transform: translateY(-3px) scale(1.03); animation-play-state: paused; z-index: 20; background: var(--brand-bg); border-color: var(--brand-bg); color: var(--brand-text); box-shadow: 0 10px 25px var(--brand-shadow); }
 
         .faq-section { text-align: center; margin-top: 10px; }
-        .faq-title { font-size: 1.1rem; margin-bottom: 20px; color: #fff; text-align: center; position: relative; display: inline-block; }
+        .faq-title { font-size: 1.1rem; margin-bottom: 20px; color: var(--text-color); text-align: center; position: relative; display: inline-block; }
         .faq-title::after { content: ''; display: block; width: 40px; height: 3px; background: #00C6FF; margin: 5px auto 0; border-radius: 2px; }
-        
-        .faq-item { margin-bottom: 12px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: 0.3s; text-align: right; }
+        .faq-item { margin-bottom: 12px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: 0.5s; text-align: right; }
+        body.light-mode .faq-item { background: #fff; border: 1px solid #ddd; }
         .faq-item.active { background: rgba(30, 30, 35, 0.9); border-color: rgba(0, 198, 255, 0.5); }
-        
-        .faq-question { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: bold; color: #e0e0e0; line-height: 1.5; }
+        body.light-mode .faq-item.active { background: #eefbff; border-color: #00C6FF; }
+        .faq-question { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: bold; color: var(--text-color); line-height: 1.5; }
         .faq-question span { flex: 1; margin-left: 10px; word-wrap: break-word; }
         .faq-icon { transition: 0.3s; color: #666; flex-shrink: 0; }
         .faq-item.active .faq-icon { transform: rotate(180deg); color: #00C6FF; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s ease; background: rgba(0,0,0,0.2); }
-        .faq-answer p { padding: 0 20px 20px; color: #bbb; font-size: 0.85rem; line-height: 1.7; text-align: right; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: 0.5s ease; background: rgba(0,0,0,0.2); }
+        body.light-mode .faq-answer { background: rgba(0,0,0,0.02); }
+        .faq-answer p { padding: 0 20px 20px; color: var(--text-sec); font-size: 0.85rem; line-height: 1.7; text-align: right; }
 
-        .footer { margin-top: 40px; font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .footer { margin-top: 40px; font-size: 0.75rem; color: var(--text-sec); letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;}
         .view-count { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+        body.light-mode .view-count { background: #ddd; color: #333; }
 
-        .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: rgba(0, 198, 255, 0.9); color: black; padding: 12px 25px;
-            border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 100; opacity: 0; pointer-events: none;
-        }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(0, 198, 255, 0.9); color: black; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 100; opacity: 0; pointer-events: none; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         .scroll-top-btn {
             position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
-            background: rgba(0, 198, 255, 0.9); color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); opacity: 0; pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 999; transform: translateY(20px);
+            background: var(--bg-color); color: var(--text-color); border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 20px rgba(0,0,0,0.2); 
+            opacity: 0; pointer-events: none; transition: all 0.4s; z-index: 999; transform: translateY(20px);
         }
         .scroll-top-btn.active { opacity: 1; pointer-events: all; transform: translateY(0); }
-        .scroll-top-btn:hover { transform: scale(1.1); background: #fff; }
+        .scroll-top-btn:hover { transform: scale(1.1); }
+        .progress-ring { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+        .progress-ring__circle { transition: 0.3s stroke-dashoffset; }
 
-        .qr-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000;
-        }
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: 0.5s; }
+        .lightbox.active { opacity: 1; pointer-events: all; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border-radius: 10px; box-shadow: 0 0 30px rgba(255,255,255,0.2); transform: scale(0.8); transition: 0.5s; }
+        .lightbox.active img { transform: scale(1); }
+        .close-lightbox { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: white; cursor: pointer; }
+
+        .qr-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s; z-index: 1000; }
         .qr-modal.active { opacity: 1; pointer-events: all; }
-        .qr-box {
-            background: white; padding: 20px; border-radius: 20px; text-align: center; color: black;
-            box-shadow: 0 0 50px rgba(0, 198, 255, 0.5); transform: scale(0.8); transition: 0.3s;
-        }
+        .qr-box { background: white; padding: 20px; border-radius: 20px; text-align: center; color: black; box-shadow: 0 0 50px rgba(0, 198, 255, 0.5); transform: scale(0.8); transition: 0.5s; }
         .qr-modal.active .qr-box { transform: scale(1); }
         .qr-image { width: 200px; height: 200px; margin-bottom: 10px; }
         .close-qr { margin-top: 10px; background: #333; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
+
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-logo">K R N</div>
+            <div class="loader-subtitle">بڕاندە ترێندەکە</div>
+        </div>
+    </div>
 
     <div class="background-orb orb-1"></div>
     <div class="background-orb orb-2"></div>
@@ -255,7 +349,20 @@
     </audio>
 
     <div class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()">
+        <svg class="progress-ring" width="45" height="45">
+            <circle class="progress-ring__circle" stroke="#00C6FF" stroke-width="3" fill="transparent" r="20" cx="22.5" cy="22.5" stroke-dasharray="125.6" stroke-dashoffset="125.6"/>
+        </svg>
         <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <div class="custom-alert" id="customAlert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="alertText">تکایە سەرەتا نامەیەک بنووسە!</span>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="close-lightbox" onclick="closeLightbox()">×</span>
+        <img id="lightbox-img" src="" alt="Full Image">
     </div>
 
     <div class="card">
@@ -264,7 +371,9 @@
             <span class="marquee-content" id="marqueeText">بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو</span>
         </div>
 
-        <div class="profile-img-container">
+        <div class="smart-greeting" id="smartGreeting"></div>
+
+        <div class="profile-img-container reveal">
             <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
             <div class="status-pill" id="statusPill">
                 <div class="status-dot"></div>
@@ -272,24 +381,29 @@
             </div>
         </div>
 
-        <div class="action-bar">
+        <div class="action-bar reveal">
+            <div class="action-btn" id="themeBtn" onclick="toggleTheme()" title="گۆڕینی دۆخ"><i class="fas fa-sun"></i></div>
             <div class="action-btn" id="musicBtn" onclick="toggleMusic()" title="Music On/Off"><i class="fas fa-music"></i></div>
             <div class="action-btn" onclick="shareOrCopy()" title="شەیرکردن"><i class="fas fa-share-alt"></i></div>
             <div class="action-btn" onclick="toggleQR()" title="QR Code"><i class="fas fa-qrcode"></i></div>
             <a href="https://maps.google.com" target="_blank" class="action-btn" title="کردنەوەی نەخشە"><i class="fas fa-map-marker-alt"></i></a>
         </div>
 
-        <div class="logo-text">KRN</div>
+        <div class="logo-text reveal">KRN</div>
         
-        <div class="name-wrapper">
+        <div class="name-wrapper reveal">
             <span class="name-text" id="typing-name"></span>
         </div>
 
-        <div class="about-badge">
+        <div class="sub-text-wrapper reveal">
+            <span class="cursor"></span><span class="rotating-text" id="rotatingText"></span>
+        </div>
+
+        <div class="about-badge reveal">
             <div class="about-text">پەڕەی فەرمی بەرهەمەکانی کامەران پشدەری</div>
         </div>
 
-        <div class="stats-container">
+        <div class="stats-container reveal">
             <div class="stat-box">
                 <div class="stat-num" data-target="500">0+</div>
                 <div class="stat-label">مشتەری</div>
@@ -304,20 +418,20 @@
             </div>
         </div>
 
-       <div class="slider-container">
+       <div class="slider-container reveal">
             <div class="slider-track">
-                <img src="https://via.placeholder.com/400x180/00C6FF/ffffff?text=Product+1" class="slide-img" alt="First Image">
-                <img src="https://via.placeholder.com/400x180/333399/ffffff?text=Product+2" class="slide-img" alt="Second Image">
-                <img src="https://via.placeholder.com/400x180/ff00cc/ffffff?text=Product+3" class="slide-img" alt="Third Image">
+                <img src="1.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="First Image">
+                <img src="2.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="Second Image">
+                <img src="3.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="Third Image">
             </div>
         </div>
 
-        <div class="quick-msg-box">
+        <div class="quick-msg-box reveal">
             <input type="text" id="quickMsgInput" class="quick-msg-input" placeholder="پرسیارەکەت لێرە بنووسە...">
             <button onclick="sendQuickWhatsapp()" class="quick-msg-btn"><i class="fab fa-whatsapp"></i> ناردن بۆ واتساپ</button>
         </div>
 
-        <div class="social-links">
+        <div class="social-links reveal">
             <a href="#" onclick="downloadContact()" class="link-btn save-contact">
                 <span>پاشەکەوتکردنی ناو</span>
                 <i class="fas fa-user-plus"></i>
@@ -344,7 +458,7 @@
             </a>
         </div>
 
-        <div class="reviews-section">
+        <div class="reviews-section reveal">
             <div class="reviews-title">ڕای مشتەرییەکانمان</div>
             <div class="reviews-scroll">
                 <div class="review-card">
@@ -360,7 +474,7 @@
             </div>
         </div>
 
-        <div class="faq-section">
+        <div class="faq-section reveal">
             <h3 class="faq-title">پرسیارەکان</h3>
             <div class="faq-item">
                 <div class="faq-question">
@@ -385,7 +499,7 @@
             </div>
         </div>
 
-        <div class="footer">
+        <div class="footer reveal">
             <span>KRN Design © 2025</span>
             <div class="view-count"><i class="fas fa-eye"></i> 1.2k</div>
         </div>
@@ -403,119 +517,198 @@
     <div class="toast" id="toastMsg">لینکەکە کۆپی کرا!</div>
 
     <script>
-        // --- کۆدی بەکارخستنی مۆسیقا ---
-        const bgAudio = document.getElementById('bgAudio');
-        const musicBtn = document.getElementById('musicBtn');
-        let isMusicPlaying = false;
+        // --- Preloader Logic & Typewriter Sync ---
+        const textElement = document.getElementById('typing-name');
+        const textToType = "کامەران پشدەری";
+        let index = 0;
 
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                bgAudio.pause();
-                isMusicPlaying = false;
-                musicBtn.classList.remove('music-playing');
-                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-            } else {
-                bgAudio.play();
-                isMusicPlaying = true;
-                musicBtn.classList.add('music-playing');
-                musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        function typeWriter() {
+            if (index < textToType.length) { 
+                textElement.innerHTML += textToType.charAt(index); 
+                index++; 
+                setTimeout(typeWriter, 200); 
             }
         }
 
-        document.body.addEventListener('click', function() {
-            if (!isMusicPlaying) {
-                // هەوڵدان بۆ لێدانی مۆسیقا دوای یەکەم کلیک
-                // bgAudio.play().then(() => { isMusicPlaying = true; musicBtn.classList.add('music-playing'); musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }).catch(e => console.log("Audio prevent"));
-            }
-        }, { once: true });
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hide-preloader');
+                setTimeout(typeWriter, 800); 
+            }, 2500); // کاتی لۆدینگ درێژتر کرایەوە
+        });
 
-        // --- ناردنی نامەی خێرا بۆ واتساپ ---
+        // --- Rotating Text Logic ---
+        const phrases = ["باشترین بەرهەم", "گەیاندنی خێرا", "متمانەی ئێوە", "نرخی گونجاو"];
+        const rotateElement = document.getElementById('rotatingText');
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 150;
+
+        function typeRotatingText() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                rotateElement.innerText = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 80;
+            } else {
+                rotateElement.innerText = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 150;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2500; // Wait before deleting
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeRotatingText, typeSpeed);
+        }
+        setTimeout(typeRotatingText, 4000);
+
+        // --- Scroll Progress Ring Logic ---
+        const circle = document.querySelector('.progress-ring__circle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        function setProgress(percent) {
+            const offset = circumference - percent / 100 * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            setProgress(scrollPercent);
+
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (scrollTop > 300) {
+                scrollTopBtn.classList.add('active');
+            } else {
+                scrollTopBtn.classList.remove('active');
+            }
+        });
+
+        // --- Lightbox Logic ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        function openLightbox(src) { lightboxImg.src = src; lightbox.classList.add('active'); }
+        function closeLightbox() { lightbox.classList.remove('active'); }
+        lightbox.addEventListener('click', (e) => { if(e.target !== lightboxImg) closeLightbox(); });
+
+        // --- Theme Toggle ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#themeBtn i');
+            if(document.body.classList.contains('light-mode')) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); } 
+            else { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+        }
+
+        // --- Music Logic ---
+        const bgAudio = document.getElementById('bgAudio');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+        function toggleMusic() {
+            if (isMusicPlaying) { bgAudio.pause(); isMusicPlaying = false; musicBtn.classList.remove('music-playing'); musicBtn.innerHTML = '<i class="fas fa-music"></i>'; } 
+            else { bgAudio.play(); isMusicPlaying = true; musicBtn.classList.add('music-playing'); musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
+        }
+        document.body.addEventListener('click', function() { if (!isMusicPlaying) { /* bgAudio.play(); */ } }, { once: true });
+
+        // --- Whatsapp Logic ---
         function sendQuickWhatsapp() {
-            const msg = document.getElementById('quickMsgInput').value;
+            const input = document.getElementById('quickMsgInput');
+            const alertBox = document.getElementById('customAlert');
+            const msg = input.value;
             if(msg.trim() === "") {
-                alert("تکایە سەرەتا نامەیەک بنووسە");
+                input.classList.add('input-error'); setTimeout(() => { input.classList.remove('input-error'); }, 300);
+                alertBox.classList.add('show'); setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
                 return;
             }
-            // ژمارە تەلەفۆنەکەت لێرە دابنێ
             const phone = "9647508718631"; 
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
         }
 
-        // --- شەیرکردن (Native Share) ---
         function shareOrCopy() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'KRN - Kamaran Pshdari',
-                    text: 'سەردانی پڕۆفایلی کامەران پشدەری بکە بۆ بینینی بەرهەمەکان',
-                    url: window.location.href,
-                })
-                .catch((error) => console.log('Error sharing', error));
-            } else {
-                // ئەگەر مۆبایلەکە شەیرکردنی نەبوو، کۆپی دەکات
-                copyLink();
-            }
+            if (navigator.share) { navigator.share({ title: 'KRN - Kamaran Pshdari', text: 'سەردانی پڕۆفایلی کامەران پشدەری بکە', url: window.location.href }).catch((error) => console.log('Error sharing', error)); } 
+            else { copyLink(); }
         }
 
-        // --- کاونتەرەکان ---
         const counters = document.querySelectorAll('.stat-num');
         counters.forEach(counter => {
             const updateCount = () => {
                 const target = +counter.getAttribute('data-target');
                 const count = +counter.innerText.replace('+', '');
                 const inc = target > 10 ? target / 100 : 1; 
-
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc) + (counter.getAttribute('data-target').includes('+') ? '+' : '');
-                    setTimeout(updateCount, 40);
-                } else {
-                    counter.innerText = target + (counter.getAttribute('data-target').includes('+') ? '+' : '');
-                }
+                if (count < target) { counter.innerText = Math.ceil(count + inc) + (counter.getAttribute('data-target').includes('+') ? '+' : ''); setTimeout(updateCount, 40); } 
+                else { counter.innerText = target + (counter.getAttribute('data-target').includes('+') ? '+' : ''); }
             };
             updateCount();
         });
+
+        // --- Smart Greeting ---
+        function updateSmartGreeting() {
+            const options = { timeZone: 'Asia/Baghdad', hour: 'numeric', hour12: false };
+            const formatter = new Intl.DateTimeFormat([], options);
+            const hour = parseInt(formatter.format(new Date()));
+            const greetingElement = document.getElementById('smartGreeting');
+            let greetingText = "";
+            if (hour >= 4 && hour < 12) greetingText = "بەیانیت باش ☀️";
+            else if (hour >= 12 && hour < 17) greetingText = "نیوەڕۆت باش 🌤️";
+            else if (hour >= 17 && hour < 21) greetingText = "ئێوارەت باش 🌆";
+            else greetingText = "شەوت باش 🌙";
+            greetingElement.innerText = greetingText;
+        }
+        updateSmartGreeting();
+
+        // --- Scroll Reveal (Slower) ---
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50;
+                if (elementTop < windowHeight - elementVisible) { reveals[i].classList.add("active"); }
+            }
+        }
+        window.addEventListener("scroll", revealOnScroll);
+        revealOnScroll();
 
         function updateStatus() {
             const now = new Date();
             const hour = now.getHours();
             const minute = now.getMinutes();
-            
             const totalCurrentMinutes = (hour * 60) + minute;
-            const openTime = 9 * 60; // 09:00
-            const closeTime = (22 * 60) + 30; // 22:30
-
+            const openTime = 9 * 60; const closeTime = (22 * 60) + 30; 
             const pill = document.getElementById('statusPill');
             const dot = pill.querySelector('.status-dot');
             const text = document.getElementById('statusText');
-            
             const marqueeText = document.getElementById('marqueeText');
             const baseMessage = "بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو";
-
             if (totalCurrentMinutes >= openTime && totalCurrentMinutes < closeTime) {
-                text.innerText = "دووکان کراوەیە"; 
-                text.style.color = "#00ff00"; 
-                dot.style.background = "#00ff00"; 
-                dot.style.boxShadow = "0 0 10px #00ff00";
+                text.innerText = "دووکان کراوەیە"; text.style.color = "#fff"; dot.style.background = "#00ff00"; dot.style.boxShadow = "0 0 10px #00ff00";
                 marqueeText.innerText = baseMessage + " - ئێستا کراوەیە 🟢";
             } else {
-                text.innerText = "دووکان داخراوە"; 
-                text.style.color = "#ff3333"; 
-                dot.style.background = "#ff3333"; 
-                dot.style.boxShadow = "0 0 10px #ff3333";
+                text.innerText = "دووکان داخراوە"; text.style.color = "#fff"; dot.style.background = "#ff3333"; dot.style.boxShadow = "0 0 10px #ff3333";
                 marqueeText.innerText = baseMessage + " - ئێستا دووکان داخراوە 🔴";
             }
         }
         updateStatus(); setInterval(updateStatus, 60000);
 
         function downloadContact() {
-            const name = "Kamaran Pshdari";
-            const phone = "07508718631";
-            const email = "info@krn.com";
+            const name = "Kamaran Pshdari"; const phone = "07508718631"; const email = "info@krn.com";
             const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
             const blob = new Blob([vcard], { type: "text/vcard" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url; a.download = "Kamaran_Pshdari.vcf";
+            const a = document.createElement("a"); a.href = url; a.download = "Kamaran_Pshdari.vcf";
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
@@ -525,36 +718,16 @@
             const answer = item.querySelector('.faq-answer');
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
-                faqItems.forEach(otherItem => {
-                    otherItem.classList.remove('active');
-                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
-                });
-                if (!isActive) {
-                    item.classList.add('active');
-                    answer.style.maxHeight = answer.scrollHeight + "px";
-                }
+                faqItems.forEach(otherItem => { otherItem.classList.remove('active'); otherItem.querySelector('.faq-answer').style.maxHeight = null; });
+                if (!isActive) { item.classList.add('active'); answer.style.maxHeight = answer.scrollHeight + "px"; }
             });
         });
-
-        const textElement = document.getElementById('typing-name');
-        const textToType = "کامەران پشدەری";
-        let index = 0;
-        function typeWriter() {
-            if (index < textToType.length) {
-                textElement.innerHTML += textToType.charAt(index);
-                index++;
-                setTimeout(typeWriter, 150);
-            }
-        }
-        setTimeout(typeWriter, 1000);
 
         function copyLink() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
                 const toast = document.getElementById('toastMsg');
-                toast.innerText = "لینکەکە کۆپی کرا!";
-                toast.classList.add('show');
-                setTimeout(() => { toast.classList.remove('show'); }, 3000);
+                toast.innerText = "لینکەکە کۆپی کرا!"; toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3000);
             });
         }
 
@@ -562,24 +735,12 @@
             const modal = document.getElementById('qrModal');
             const qrImage = document.getElementById('qrImage');
             if (!modal.classList.contains('active')) {
-                const url = window.location.href;
-                qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${url}`;
+                const url = window.location.href; qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${url}`;
             }
             modal.classList.toggle('active');
         }
 
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.classList.add('active');
-            } else {
-                scrollTopBtn.classList.remove('active');
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     </script>
 </body>
 </html>
