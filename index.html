@@ -9,6 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     
     <style>
         /* --- ڕێکخستنی گشتی --- */
@@ -49,23 +50,33 @@
             transition: opacity 1.5s ease-out, visibility 1.5s;
         }
         .loader-content {
-            text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;
+            text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .welcome-text {
+            font-size: 1.2rem; color: #fff; font-weight: 400; letter-spacing: 2px; margin-bottom: 5px;
+            opacity: 0; transform: translateY(-20px);
+            animation: fadeInDownWelcome 1s ease forwards 0.3s;
         }
         .loader-logo {
-            font-size: 3.5rem; font-weight: 900; color: #fff; letter-spacing: 10px;
-            text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-            animation: glowPulse 3s infinite alternate ease-in-out;
+            font-size: 3.8rem; font-weight: 900; color: #00C6FF; letter-spacing: 12px;
+            text-shadow: 0 0 25px #00C6FF; margin: 5px 0;
+            opacity: 0; transform: scale(0.8);
+            animation: scaleInLogo 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
         }
         .loader-subtitle {
-            font-size: 1.2rem; color: var(--gold); font-weight: 400; letter-spacing: 2px;
+            font-size: 1.1rem; color: #FFD700; font-weight: 400; letter-spacing: 1px;
             opacity: 0; transform: translateY(20px);
-            animation: fadeInUp 1.5s ease-out forwards 0.5s; 
-            border-top: 1px solid rgba(255, 215, 0, 0.5); padding-top: 10px; width: 100%;
+            animation: fadeInUpSubtitle 1s ease forwards 1.5s;
+            position: relative; padding-top: 10px;
+        }
+        .loader-subtitle::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 2px; background: #FFD700; border-radius: 2px;
         }
 
-        @keyframes glowPulse { from { text-shadow: 0 0 10px var(--accent); transform: scale(1); } to { text-shadow: 0 0 30px var(--accent), 0 0 50px var(--accent); transform: scale(1.05); } }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        
+        @keyframes fadeInDownWelcome { to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleInLogo { to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeInUpSubtitle { to { opacity: 1; transform: translateY(0); } }
         .hide-preloader { opacity: 0; visibility: hidden; }
 
         /* Background */
@@ -104,12 +115,8 @@
         @keyframes shakeInput { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         .input-error { border: 1px solid #ff5050 !important; animation: shakeInput 0.3s ease-in-out; }
 
-        /* --- Scroll Reveal --- */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(50px); 
-            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-        }
+        /* Scroll Reveal */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* Smart Greeting */
@@ -133,37 +140,26 @@
         }
         @keyframes moveLeftToRight { 0% { left: 0; transform: translate(-100%, -50%); } 100% { left: 100%; transform: translate(0%, -50%); } }
 
-        /* --- Updated Action Bar (Progressive Scale) --- */
+        /* Action Bar */
         .action-bar {
             position: relative; margin: 25px auto 10px auto; display: flex; justify-content: center;
             gap: 15px; background: var(--action-bg); padding: 12px 20px;
             border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
         .action-btn { 
             font-size: 1.2rem; color: var(--action-icon); cursor: pointer; transition: 0.3s; 
             display: flex; align-items: center; justify-content: center; text-decoration: none; 
             width: 35px; height: 35px;
-            /* ئەنیمەیشنی نوێ: بێ گۆڕینی ڕەنگ */
             animation: btnScaleOnly 4s infinite ease-in-out;
         }
-        
-        @keyframes btnScaleOnly {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(var(--target-scale)); }
-        }
-
-        /* پلەبەندی گەورەبوون (Scale) */
-        .action-btn:nth-child(1) { animation-delay: 0s; --target-scale: 1.1; }   /* کەمێک */
-        .action-btn:nth-child(2) { animation-delay: 0.3s; --target-scale: 1.15; } /* زیاتر */
-        .action-btn:nth-child(3) { animation-delay: 0.6s; --target-scale: 1.2; }  /* زیاتر */
-        .action-btn:nth-child(4) { animation-delay: 0.9s; --target-scale: 1.25; } /* زیاتر */
-        .action-btn:nth-child(5) { animation-delay: 1.2s; --target-scale: 1.3; }  /* زۆرترین */
-
+        @keyframes btnScaleOnly { 0%, 100% { transform: scale(1); } 50% { transform: scale(var(--target-scale)); } }
+        .action-btn:nth-child(1) { animation-delay: 0s; --target-scale: 1.1; }
+        .action-btn:nth-child(2) { animation-delay: 0.3s; --target-scale: 1.15; }
+        .action-btn:nth-child(3) { animation-delay: 0.6s; --target-scale: 1.2; }
+        .action-btn:nth-child(4) { animation-delay: 0.9s; --target-scale: 1.25; }
+        .action-btn:nth-child(5) { animation-delay: 1.2s; --target-scale: 1.3; }
         .action-btn:hover { color: var(--accent); transform: scale(1.2) !important; animation-play-state: paused; }
-        
-        /* ڕەنگی سەوز تەنها کاتێک مۆسیقا لێ دەدات */
         .music-playing { color: #00ff00 !important; }
 
         .profile-img-container {
@@ -186,8 +182,7 @@
             font-size: 5rem; font-weight: 900; letter-spacing: 6px;
             background: linear-gradient(to right, #ffffff, #00C6FF, #b3b3b3, #00C6FF, #ffffff);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shineLogo 6s linear infinite;
-            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
+            animation: shineLogo 6s linear infinite; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.6));
             margin-bottom: 0px; margin-top: 5px;
         }
         body.light-mode .logo-text { background: linear-gradient(to right, #333, #00C6FF, #555, #00C6FF, #333); -webkit-background-clip: text; }
@@ -199,10 +194,8 @@
             border-left: 2px solid var(--accent); padding-left: 5px;
         }
 
-        /* Rotating Text */
         .sub-text-wrapper {
-            height: 40px; overflow: hidden; 
-            margin-bottom: 20px; margin-top: 0px;
+            height: 40px; overflow: hidden; margin-bottom: 20px; margin-top: 0px;
             display: flex; align-items: center; justify-content: center;
         }
         .rotating-text {
@@ -299,8 +292,35 @@
         body.light-mode .faq-answer { background: rgba(0,0,0,0.02); }
         .faq-answer p { padding: 0 20px 20px; color: var(--text-sec); font-size: 0.85rem; line-height: 1.7; text-align: right; }
 
-        .footer { margin-top: 40px; font-size: 0.75rem; color: var(--text-sec); letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;}
-        .view-count { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+        /* --- Footer Styles --- */
+        .footer { 
+            margin-top: 50px; 
+            padding-bottom: 20px; 
+            display: flex; flex-direction: column; align-items: center; gap: 15px; 
+            text-align: center; 
+        }
+        .footer-content {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 25px; border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .dev-label { font-size: 0.7rem; color: #888; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
+        .sarkar-tech {
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.95rem;
+            background: linear-gradient(90deg, #fff, #00C6FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+        .tg-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: #fff; background: #24A1DE; /* Telegram Blue */
+            padding: 6px 14px; border-radius: 50px;
+            font-size: 0.8rem; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(36, 161, 222, 0.3); transition: 0.3s;
+        }
+        .tg-link:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(36, 161, 222, 0.5); background: #2fb4f5; }
+        .view-count { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; color: var(--text-sec); }
         body.light-mode .view-count { background: #ddd; color: #333; }
 
         .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(0, 198, 255, 0.9); color: black; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 100; opacity: 0; pointer-events: none; }
@@ -336,6 +356,7 @@
 
     <div id="preloader">
         <div class="loader-content">
+            <div class="welcome-text">بــەخــێربــێــن بــۆ</div>
             <div class="loader-logo">K R N</div>
             <div class="loader-subtitle">بڕاندە ترێندەکە</div>
         </div>
@@ -500,7 +521,13 @@
         </div>
 
         <div class="footer reveal">
-            <span>KRN Design © 2025</span>
+            <div class="footer-content">
+                <span class="dev-label">Developed by</span>
+                <span class="sarkar-tech">Sarkar Technology</span>
+                <a href="https://t.me/sarkar7216" target="_blank" class="tg-link">
+                    <i class="fab fa-telegram-plane"></i> sarkar7216
+                </a>
+            </div>
             <div class="view-count"><i class="fas fa-eye"></i> 1.2k</div>
         </div>
     </div>
@@ -534,7 +561,7 @@
             setTimeout(() => {
                 document.getElementById('preloader').classList.add('hide-preloader');
                 setTimeout(typeWriter, 800); 
-            }, 2500); // کاتی لۆدینگ درێژتر کرایەوە
+            }, 3000); 
         });
 
         // --- Rotating Text Logic ---
@@ -569,7 +596,7 @@
 
             setTimeout(typeRotatingText, typeSpeed);
         }
-        setTimeout(typeRotatingText, 4000);
+        setTimeout(typeRotatingText, 4500);
 
         // --- Scroll Progress Ring Logic ---
         const circle = document.querySelector('.progress-ring__circle');
