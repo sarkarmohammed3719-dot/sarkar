@@ -99,6 +99,27 @@
         }
         body.light-mode .card { box-shadow: 0 25px 50px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
 
+        /* Scroll Down Indicator (NEW) */
+        .scroll-down-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 900;
+            color: var(--accent);
+            font-size: 2rem;
+            animation: bounceDown 2s infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .scroll-down-indicator.show { opacity: 0.8; }
+        @keyframes bounceDown {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
         /* Custom Alert */
         .custom-alert {
             position: fixed; top: 25px; left: 50%; transform: translate(-50%, -100px);
@@ -162,18 +183,41 @@
         .action-btn:hover { color: var(--accent); transform: scale(1.2) !important; animation-play-state: paused; }
         .music-playing { color: #00ff00 !important; }
 
+        /* --- Neon Ring Profile --- */
         .profile-img-container {
-            width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; padding: 5px;
-            background: linear-gradient(135deg, #00f260, #0575e6);
-            box-shadow: 0 0 30px rgba(5, 117, 230, 0.5); position: relative;
+            width: 150px; height: 150px; margin: 0 auto 25px; border-radius: 50%; 
+            position: relative; z-index: 1; display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.5);
         }
-        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #1a1a1a; }
+        .profile-img-container::before {
+            content: ''; position: absolute; inset: -4px; border-radius: 50%;
+            background: conic-gradient(#00C6FF, #FFD700, #ff00cc, #00C6FF);
+            animation: rotateBorder 4s linear infinite; z-index: -1;
+        }
+        .profile-img-container::after {
+            content: ''; position: absolute; inset: -4px; border-radius: 50%;
+            background: inherit; filter: blur(20px); opacity: 0.7; z-index: -2;
+            animation: rotateBorder 4s linear infinite;
+        }
+        .profile-img-container.music-active::before,
+        .profile-img-container.music-active::after { animation-duration: 1.5s; filter: blur(25px); }
+        @keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .profile-img { 
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover; 
+            border: 4px solid #1a1a1a; position: absolute; 
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .default-img { opacity: 1; z-index: 2; transform: scale(1); }
+        .music-img { opacity: 0; z-index: 3; transform: scale(0) rotate(-180deg); }
+        .profile-img-container.music-active .default-img { opacity: 0; transform: scale(0) rotate(180deg); }
+        .profile-img-container.music-active .music-img { opacity: 1; transform: scale(1) rotate(0deg); border-color: #00C6FF; }
         
         .status-pill {
-            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) translateY(50%);
-            background: #222; border: 1px solid rgba(255,255,255,0.2);
-            padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: #fff;
-            display: flex; align-items: center; gap: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+            background: #000; border: 1px solid rgba(255,255,255,0.3);
+            padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; color: #fff;
+            display: flex; align-items: center; gap: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             white-space: nowrap; z-index: 10;
         }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -215,21 +259,86 @@
         .about-text { font-size: 0.85rem; color: var(--text-sec); font-weight: 400; }
         .about-badge::after { content: ''; display: block; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, #FFD700, transparent); margin: 2px auto 0; border-radius: 2px; }
 
-        .stats-container {
-            display: flex; justify-content: space-around; width: 100%; margin-bottom: 25px;
-            background: rgba(0,0,0,0.2); border-radius: 20px; padding: 15px 5px;
+        /* --- UPDATED SLIDER STYLES (Bottom Controls) --- */
+        .product-showcase {
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        body.light-mode .stats-container { background: rgba(0,0,0,0.05); }
-        .stat-box { text-align: center; }
-        .stat-num { font-size: 1.3rem; font-weight: 900; color: #FFD700; }
-        .stat-label { font-size: 0.7rem; color: var(--text-sec); margin-top: 3px; }
-
-        .slider-container { width: 100%; overflow: hidden; margin-bottom: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
-        .slider-track { display: flex; width: 300%; animation: sliderAnimation 15s infinite ease-in-out; }
-        .slider-track:hover { animation-play-state: paused; }
-        .slide-img { width: 100%; height: 180px; object-fit: cover; cursor: pointer; transition: transform 0.5s ease;}
-        .slide-img:hover { transform: scale(1.03); }
-        @keyframes sliderAnimation { 0%, 30% { transform: translateX(0); } 35%, 65% { transform: translateX(33.33%); } 70%, 100% { transform: translateX(66.66%); } }
+        
+        .slider-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            display: flex;
+            gap: 15px;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            padding: 5px;
+        }
+        .slider-container::-webkit-scrollbar { display: none; }
+        
+        .slide-img { 
+            min-width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            cursor: pointer; 
+            border-radius: 15px;
+            transition: transform 0.5s ease;
+        }
+        
+        /* The Controls Container */
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            border-radius: 50px;
+            width: fit-content;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* The Navigation Buttons */
+        .slider-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            color: #fff;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-btn:hover {
+            background: #00C6FF;
+            color: #000;
+            box-shadow: 0 0 15px #00C6FF;
+            border-color: #00C6FF;
+        }
+        
+        /* The Center Line */
+        .slider-divider {
+            width: 2px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            border-radius: 2px;
+            box-shadow: 0 0 5px #00C6FF; /* Neon Glow */
+            background-color: #00C6FF;
+        }
+        /* -------------------------- */
 
         .quick-msg-box {
             background: var(--card-bg); padding: 15px; border-radius: 15px; margin-bottom: 25px;
@@ -241,7 +350,8 @@
         .quick-msg-btn { background: #25D366; color: white; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .quick-msg-btn:hover { background: #1ebc57; }
 
-        .reviews-section { margin-bottom: 35px; text-align: right; }
+        /* REVIEWS SECTION UPDATES */
+        .reviews-section { margin-bottom: 35px; text-align: right; position: relative; }
         .reviews-title { font-size: 1rem; color: var(--text-sec); margin-bottom: 15px; padding-right: 10px; border-right: 3px solid #00C6FF; }
         .reviews-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
         .reviews-scroll::-webkit-scrollbar { display: none; }
@@ -251,6 +361,32 @@
         .stars { color: #FFD700; font-size: 0.8rem; }
         .review-text { font-size: 0.8rem; color: var(--text-sec); line-height: 1.5; }
         .review-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; text-align: left; margin-top: 5px; }
+
+        /* Swipe Hint Animation */
+        .swipe-hint {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.8;
+            animation: swipeHand 2s infinite ease-in-out;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            transition: opacity 0.3s;
+        }
+        .reviews-section:hover .swipe-hint, 
+        .reviews-section:active .swipe-hint { opacity: 0; }
+
+        @keyframes swipeHand {
+            0% { transform: translate(-50%, -50%) translateX(20px); opacity: 0; }
+            50% { transform: translate(-50%, -50%) translateX(-20px); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateX(-20px); opacity: 0; }
+        }
 
         .social-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
         @keyframes popOutColor {
@@ -362,6 +498,10 @@
         </div>
     </div>
 
+    <div class="scroll-down-indicator" id="scrollDownHint">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+
     <div class="background-orb orb-1"></div>
     <div class="background-orb orb-2"></div>
 
@@ -389,13 +529,15 @@
     <div class="card">
         
         <div class="welcome-marquee">
-            <span class="marquee-content" id="marqueeText">بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو</span>
+            <span class="marquee-content" id="marqueeText">بەخێربێن دووکانمان سەعات 9:00 بەیانی کراوەیە تاکو 10:30 شەو</span>
         </div>
 
         <div class="smart-greeting" id="smartGreeting"></div>
 
-        <div class="profile-img-container reveal">
-            <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
+        <div class="profile-img-container reveal" id="profileContainer">
+            <img src="me.jpg" alt="Kamaran Pshdari" class="profile-img default-img" onerror="this.src='https://via.placeholder.com/150'">
+            <img src="logo2.jpg" alt="Music Logo" class="profile-img music-img" onerror="this.src='https://via.placeholder.com/150'">
+            
             <div class="status-pill" id="statusPill">
                 <div class="status-dot"></div>
                 <span id="statusText">...</span>
@@ -421,32 +563,31 @@
         </div>
 
         <div class="about-badge reveal">
-            <div class="about-text">پەڕەی فەرمی بەرهەمەکانی کامەران پشدەری</div>
-        </div>
-
-        <div class="stats-container reveal">
-            <div class="stat-box">
-                <div class="stat-num" data-target="500">0+</div>
-                <div class="stat-label">مشتەری</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num" data-target="3">0</div>
-                <div class="stat-label">ساڵ ئەزموون</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num" data-target="4">0</div>
-                <div class="stat-label">بەرهەم</div>
+            <div class="about-text" style="line-height: 1.8;">
+                پەڕەی فەرمی بەرهەمەکان<br>
+                <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-color);">کامەران پشدەری</span>
             </div>
         </div>
 
-       <div class="slider-container reveal">
-            <div class="slider-track">
+        <div class="product-showcase reveal">
+            <div class="slider-container" id="sliderContainer">
                 <img src="1.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="First Image">
                 <img src="2.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="Second Image">
                 <img src="3.jpg" class="slide-img" onclick="openLightbox(this.src)" alt="Third Image">
             </div>
-        </div>
 
+            <div class="slider-controls">
+                <button class="slider-btn" onclick="scrollSlider(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <div class="slider-divider"></div>
+                
+                <button class="slider-btn" onclick="scrollSlider(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
         <div class="quick-msg-box reveal">
             <input type="text" id="quickMsgInput" class="quick-msg-input" placeholder="پرسیارەکەت لێرە بنووسە...">
             <button onclick="sendQuickWhatsapp()" class="quick-msg-btn"><i class="fab fa-whatsapp"></i> ناردن بۆ واتساپ</button>
@@ -479,18 +620,313 @@
             </a>
         </div>
 
-        <div class="reviews-section reveal">
+        <div class="reviews-section reveal" id="reviewsSection">
             <div class="reviews-title">ڕای مشتەرییەکانمان</div>
-            <div class="reviews-scroll">
+            
+            <div class="swipe-hint" id="swipeHint">
+                <i class="fas fa-hand-pointer"></i>
+            </div>
+
+            <div class="reviews-scroll" id="reviewsContainer">
                 <div class="review-card">
                     <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"دەستتان خۆش بێت بەڕاستی کارەکەتان زۆر جوان و ناوازە بوو، زۆر لێی ڕازیم."</div>
-                    <div class="review-author">- ئەحمەد کەریم</div>
+                    <div class="review-text">"شامپۆی قژ هەڵوەرینەکەتان موعجیزەیە، دوای مانگێک هەڵوەرینی قژم بە تەواوی وەستا."</div>
+                    <div class="review-author">- هەرێم عەلی</div>
                 </div>
                 <div class="review-card">
                     <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
-                    <div class="review-text">"خزمەتگوزارییەکانتان زۆر خێران و نرخەکانتان زۆر گونجاون، سەرکەوتوو بن."</div>
-                    <div class="review-author">- ڕێباز عەلی</div>
+                    <div class="review-text">"غەنە ڕەشەکە زۆر سروشتییە، هەموو سپییەکانی قژمی داپۆشی بەبێ ئەوەی وەک بۆیە دیار بێت."</div>
+                    <div class="review-author">- کەژاڵ کەمال</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە زۆر ئەسڵ بوو، کڕێشی سەرم نەما و قژم زۆر بەهێز بووە."</div>
+                    <div class="review-author">- دکتۆر خالید</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە زۆر نایابە، زەردی ددانەکانم نەماوە و زۆر سپی بوونەتەوە."</div>
+                    <div class="review-author">- سۆما ئەحمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە زۆر باشە، چاوی کچەکەم ناکزێنێتەوە و قژی زۆر نەرم کردووە."</div>
+                    <div class="review-author">- نیان مەجید</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ماڕۆنییەکە ڕەنگێکی زۆر شاز و جیاوازی دایە قژم، دەستخۆش."</div>
+                    <div class="review-author">- سۆما ڕەزاق</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکە زۆر جوان دەرچوو، ڕەنگێکی بریقەدار و سەرنجڕاکێشە."</div>
+                    <div class="review-author">- لانیا محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"بەڕاستی شامپۆی قژەکەتان بێ ڕکابەرە، قژم پڕ بووەتەوە."</div>
+                    <div class="review-author">- مامۆستا هیوا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە قاوەییەکە زۆر جوانە، ڕێک ئەو ڕەنگە بوو کە دەمویست."</div>
+                    <div class="review-author">- نەسرین عەبدوڵا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە بۆنی دەم زۆر خۆش دەکات و کلۆر ڕادەگرێت."</div>
+                    <div class="review-author">- ئاکۆ جەمال</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە بۆ قژی چەور زۆر باشە، چەورییە زیانبەخشەکان لادەبات."</div>
+                    <div class="review-author">- دکتۆر سەردار</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە بۆنی زۆر خۆشە و هەستیاری بۆ پێستی منداڵ دروست ناکات."</div>
+                    <div class="review-author">- چیمەن ئەنوەر</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ڕەشەکە زۆر ڕەقەی قژ بەهێز دەکات، جگە لە ڕەنگەکەی."</div>
+                    <div class="review-author">- هێرۆ خان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی دژی قژ هەڵوەرینەکە باشترین چارەسەر بوو بۆ من."</div>
+                    <div class="review-author">- بەختیار کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"هەموو جۆرەکانی غەنەتانم تاقی کردەوە، ماڕۆنییەکە زۆر تایبەتە."</div>
+                    <div class="review-author">- ڤیان سەڵاح</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە پووک بەهێز دەکات، خوێنبەربوونی پووکم نەماوە."</div>
+                    <div class="review-author">- کاروان عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە وایکردووە قژم زۆر خاو و جوان بێتەوە."</div>
+                    <div class="review-author">- ژیان خەسرەو</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکە زۆر مانەوەی هەیە و زوو کاڵ نابێتەوە."</div>
+                    <div class="review-author">- خەندە جەزا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە زۆر بە بەرەکەتە و کوالێتی بەرزە."</div>
+                    <div class="review-author">- هێلین عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە قاوەییەکە ڕەنگێکی زۆر شیکی هەیە، دەستخۆش."</div>
+                    <div class="review-author">- ڕووناک حەسەن</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژەکە بۆ ئەو کەسانەی قژیان تەنکە زۆر بەسوودە."</div>
+                    <div class="review-author">- ئاریان مستەفا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکەتان تاقانەیە، پەڵەی سەر ددان لادەبات."</div>
+                    <div class="review-author">- دکتۆر شادان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ڕەشەکە زۆر بە جوانی سپی قژ دادەپۆشێت."</div>
+                    <div class="review-author">- پەیمان عەزیز</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە بۆ گەشەی قژ زۆر باشە، هەستم کردووە قژم درێژ بووەتەوە."</div>
+                    <div class="review-author">- شۆخان عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ماڕۆنییەکە لەبەر ڕۆژ زۆر جوان دەردەکەوێت."</div>
+                    <div class="review-author">- شلێر جەلال</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە پێستی سەر وشک ناکاتەوە، زۆر شێدارە."</div>
+                    <div class="review-author">- هەڵاڵە خان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژ هەڵوەرینەکەتانم بۆ هاوڕێکانم باسکرد، هەموویان ڕازی بوون."</div>
+                    <div class="review-author">- سۆران کامەران</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکە قژ زۆر بریقەدار دەکات، مات دەرناکەوێت."</div>
+                    <div class="review-author">- لاڤین کامەران</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە تامی زۆر خۆشە و پشوویەک دەدات بە دەم."</div>
+                    <div class="review-author">- دڵشاد مەجید</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە بەکاردێنم بۆ خۆم و کچەکەم، هەردووکیانمان سوودمان لێ بینیوە."</div>
+                    <div class="review-author">- مامۆستا کەژاڵ</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە قاوەییەکە زۆر سروشتییە، کەس هەست ناکات غەنەیە."</div>
+                    <div class="review-author">- شیلان محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژەکە بۆ قژی بۆیەکراویش زۆر گونجاوە."</div>
+                    <div class="review-author">- شنۆ حەمە</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ڕەشەکە مانەوەی زۆرە و بە ئاسانی لێ نابێتەوە."</div>
+                    <div class="review-author">- ئاڤان دیاری</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونەکە باشترینە بۆ ئەوانەی جگەرە دەکێشن، ڕەنگی ددان چاک دەکات."</div>
+                    <div class="review-author">- عومەر فەتاح</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە زۆر ناسکە، تەنانەت بۆ تازە لەدایکبووش باشە."</div>
+                    <div class="review-author">- دکتۆر نازەنین</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە بۆ بەهێزکردنی ڕەگی موو بێ وێنەیە."</div>
+                    <div class="review-author">- ئاکۆ جەزا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ماڕۆنییەکە ڕەنگێکی گەرمی هەیە، زۆر جوانە."</div>
+                    <div class="review-author">- سازان عەزیز</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژ هەڵوەرینەکە ژیانی قژمی ڕزگار کرد."</div>
+                    <div class="review-author">- لەنیا ئەحمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکەتان جیاوازە لە هەموو ئەوانەی لە بازاڕ هەن."</div>
+                    <div class="review-author">- بەیان عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە هەستیاری ددان کەم دەکاتەوە."</div>
+                    <div class="review-author">- مامۆستا ڕەزاق</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە قاوەییەکە زۆر بە جوانی تێکەڵ دەبێت لەگەڵ ڕەنگی قژی خۆم."</div>
+                    <div class="review-author">- شیرین محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە پاککەرەوەیەکی سروشتی زۆر باشە بۆ سەر."</div>
+                    <div class="review-author">- کاروان کەمال</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە قژ ئاڵۆسکاو ناکات، زۆر بە ئاسانی شانە دەکرێت."</div>
+                    <div class="review-author">- دڵنیا خان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ڕەشەکە بەکاردێنم، قژم پڕتر دەردەکەوێت."</div>
+                    <div class="review-author">- نیگار عوسمان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژەکە بۆنی زۆر خۆشە و تا ماوەیەکی زۆر دەمێنێتەوە."</div>
+                    <div class="review-author">- لانە جەبار</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونەکە زۆر بەکاردێنم، زۆر ئیکتیسادییە."</div>
+                    <div class="review-author">- ڕێناس کامەران</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ماڕۆنییەکە زۆر گونجاوە بۆ بۆنە و ئاهەنگەکان."</div>
+                    <div class="review-author">- سنوور عەلی</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە کێشەی خورانی سەری چارەسەر کردم."</div>
+                    <div class="review-author">- کامەران فەقێ</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکە زۆر سەرنجڕاکێشە، هەمووان پرسیاری ڕەنگەکەیان دەکرد."</div>
+                    <div class="review-author">- تارا محەمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکەتان باشترین دیارییە بۆ دایکان."</div>
+                    <div class="review-author">- دکتۆر بەناز</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە قاوەییەکە زۆر بە جوانی تێکەڵ دەبێت لەگەڵ ڕەنگی قژی خۆم."</div>
+                    <div class="review-author">- سروە سامان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی قژ هەڵوەرینەکە مووی مردوو زیندوو دەکاتەوە."</div>
+                    <div class="review-author">- ژیلیا خەلیل</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە مینای ددان ناڕوشێنێت."</div>
+                    <div class="review-author">- ڕەوا جەمال</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ڕەشەکە زۆر تۆخ و جوانە."</div>
+                    <div class="review-author">- نیان عوسمان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"سدرەکە جگە لە بەهێزکردن، قژەکە خاوێن ڕادەگرێت."</div>
+                    <div class="review-author">- مامۆستا زانا</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە ماڕۆنییەکە ڕەونەقێکی تایبەت دەدات بە قژ."</div>
+                    <div class="review-author">- چیمەن ئەحمەد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"شامپۆی منداڵانەکە زۆر سەلامەتە و بێ مەوادە."</div>
+                    <div class="review-author">- ڕۆژان کەریم</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"غەنە سوورەکە گەنجی دەکاتەوە بە قژەوە."</div>
+                    <div class="review-author">- ڕۆژین نەوزاد</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"مەحجونی ددانەکە باشترین هەڵبژاردنە بۆ تەندروستی دەم."</div>
+                    <div class="review-author">- دکتۆر بەرزان</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header"><div class="stars">⭐⭐⭐⭐⭐</div></div>
+                    <div class="review-text">"هەموو بەرهەمەکانتان بەتایبەت شامپۆکان جێگای شانازین."</div>
+                    <div class="review-author">- ئاراس مەحمود</div>
                 </div>
             </div>
         </div>
@@ -557,12 +993,26 @@
             }
         }
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hide-preloader');
+        function finishLoading() {
+            const preloader = document.getElementById('preloader');
+            const scrollHint = document.getElementById('scrollDownHint');
+            
+            if (!preloader.classList.contains('hide-preloader')) {
+                preloader.classList.add('hide-preloader');
                 setTimeout(typeWriter, 800); 
-            }, 3000); 
+                // Show scroll hint
+                setTimeout(() => {
+                    scrollHint.classList.add('show');
+                }, 1000);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(finishLoading, 3000); 
         });
+
+        setTimeout(finishLoading, 5000);
+        // -------------------------
 
         // --- Rotating Text Logic ---
         const phrases = ["باشترین بەرهەم", "گەیاندنی خێرا", "متمانەی ئێوە", "نرخی گونجاو"];
@@ -617,10 +1067,17 @@
             setProgress(scrollPercent);
 
             const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const scrollDownHint = document.getElementById('scrollDownHint');
+
             if (scrollTop > 300) {
                 scrollTopBtn.classList.add('active');
             } else {
                 scrollTopBtn.classList.remove('active');
+            }
+
+            // Hide scroll down hint when user scrolls
+            if (scrollTop > 50) {
+                scrollDownHint.classList.remove('show');
             }
         });
 
@@ -631,6 +1088,53 @@
         function closeLightbox() { lightbox.classList.remove('active'); }
         lightbox.addEventListener('click', (e) => { if(e.target !== lightboxImg) closeLightbox(); });
 
+        // --- SLIDER LOGIC (Images) ---
+        function scrollSlider(direction) {
+            const container = document.getElementById('sliderContainer');
+            const scrollAmount = container.offsetWidth; 
+            container.scrollBy({ left: -direction * scrollAmount, behavior: 'smooth' });
+        }
+        
+        // --- Auto Scroll Reviews Logic (Updated) ---
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const swipeHint = document.getElementById('swipeHint');
+        let scrollSpeed = 1; 
+        let scrollInterval;
+        let resumeTimeout;
+
+        function startAutoScroll() {
+            clearInterval(scrollInterval);
+            scrollInterval = setInterval(() => {
+                // For RTL, we move left by subtracting (or adding negative)
+                if (Math.abs(reviewsContainer.scrollLeft) >= (reviewsContainer.scrollWidth - reviewsContainer.clientWidth - 5)) {
+                   reviewsContainer.scrollLeft = 0; 
+                } else {
+                   reviewsContainer.scrollLeft -= scrollSpeed; 
+                }
+            }, 30);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(scrollInterval);
+            swipeHint.style.opacity = '0'; 
+        }
+
+        startAutoScroll();
+
+        reviewsContainer.addEventListener('mousedown', stopAutoScroll);
+        reviewsContainer.addEventListener('touchstart', stopAutoScroll);
+
+        function resumeScrolling() {
+            clearTimeout(resumeTimeout);
+            resumeTimeout = setTimeout(() => {
+                startAutoScroll();
+            }, 2000); 
+        }
+
+        reviewsContainer.addEventListener('mouseup', resumeScrolling);
+        reviewsContainer.addEventListener('mouseleave', resumeScrolling);
+        reviewsContainer.addEventListener('touchend', resumeScrolling);
+
         // --- Theme Toggle ---
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
@@ -639,15 +1143,32 @@
             else { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
         }
 
-        // --- Music Logic ---
+        // --- Music Logic (UPDATED) ---
         const bgAudio = document.getElementById('bgAudio');
         const musicBtn = document.getElementById('musicBtn');
+        const profileContainer = document.getElementById('profileContainer');
         let isMusicPlaying = false;
+
         function toggleMusic() {
-            if (isMusicPlaying) { bgAudio.pause(); isMusicPlaying = false; musicBtn.classList.remove('music-playing'); musicBtn.innerHTML = '<i class="fas fa-music"></i>'; } 
-            else { bgAudio.play(); isMusicPlaying = true; musicBtn.classList.add('music-playing'); musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
+            if (isMusicPlaying) { 
+                bgAudio.pause(); 
+                isMusicPlaying = false; 
+                musicBtn.classList.remove('music-playing'); 
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                profileContainer.classList.remove('music-active');
+            } 
+            else { 
+                bgAudio.play(); 
+                isMusicPlaying = true; 
+                musicBtn.classList.add('music-playing'); 
+                musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                profileContainer.classList.add('music-active');
+            }
         }
-        document.body.addEventListener('click', function() { if (!isMusicPlaying) { /* bgAudio.play(); */ } }, { once: true });
+        
+        document.body.addEventListener('click', function() { 
+            if (!isMusicPlaying) { /* bgAudio.play(); */ } 
+        }, { once: true });
 
         // --- Whatsapp Logic ---
         function sendQuickWhatsapp() {
@@ -668,18 +1189,6 @@
             if (navigator.share) { navigator.share({ title: 'KRN - Kamaran Pshdari', text: 'سەردانی پڕۆفایلی کامەران پشدەری بکە', url: window.location.href }).catch((error) => console.log('Error sharing', error)); } 
             else { copyLink(); }
         }
-
-        const counters = document.querySelectorAll('.stat-num');
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText.replace('+', '');
-                const inc = target > 10 ? target / 100 : 1; 
-                if (count < target) { counter.innerText = Math.ceil(count + inc) + (counter.getAttribute('data-target').includes('+') ? '+' : ''); setTimeout(updateCount, 40); } 
-                else { counter.innerText = target + (counter.getAttribute('data-target').includes('+') ? '+' : ''); }
-            };
-            updateCount();
-        });
 
         // --- Smart Greeting ---
         function updateSmartGreeting() {
@@ -719,7 +1228,7 @@
             const dot = pill.querySelector('.status-dot');
             const text = document.getElementById('statusText');
             const marqueeText = document.getElementById('marqueeText');
-            const baseMessage = "بەخێربێن دووکانمان لەسەعات 9 بەیانی کراوەیە تاکو 10:30 شەو";
+            const baseMessage = "بەخێربێن دووکانمان سەعات 9:00 بەیانی کراوەیە تاکو 10:30 شەو";
             if (totalCurrentMinutes >= openTime && totalCurrentMinutes < closeTime) {
                 text.innerText = "دووکان کراوەیە"; text.style.color = "#fff"; dot.style.background = "#00ff00"; dot.style.boxShadow = "0 0 10px #00ff00";
                 marqueeText.innerText = baseMessage + " - ئێستا کراوەیە 🟢";
